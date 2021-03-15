@@ -1,0 +1,407 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>Entidades</title>
+
+        <!-- Custom fonts for this template-->
+        <link href="shared/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+        <!--Dependencias-->
+        <!-- Ion range slider -->
+        <link rel="stylesheet" href="shared/ionRangeSlider/ion.rangeSlider.min.css">
+        <!--Datepicker css-->
+        <link rel="stylesheet" href="shared/bootstrap-datepicker/bootstrap-datepicker.min.css">
+
+        <!-- Alertify -->
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+        <!-- Alertify Default theme -->
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+        <!--Multiselect-->
+        <link rel="stylesheet" href="shared/bootstrap-multiselect/bootstrap-multiselect.css">
+        <!--D3 tips-->
+        <link rel="stylesheet" href="shared/d3/d3-tip.css">
+        <!-- Datatables -->
+        <link href="shared/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+        <!--TODO: SMOOTH COLLAPSE WORKS WITH THIS BUT NOT WITH WHAT IT IS UNDERNEATH-->
+        <!--<link href="shared/bootstrap/css/bootstrap.css" rel="stylesheet">-->
+        
+        <!-- Custom styles for this template-->
+        <link href="css/sb-admin-2.css" rel="stylesheet">
+
+        <!-- Custom styling -->
+        <link rel="stylesheet" href="css/style.css">
+
+        <!-- Google Fonts -->
+        <link href="https://fonts.googleapis.com/css2?family=Mulish&display=swap" rel="stylesheet">
+
+
+    </head>
+
+    <body id="page-top">
+
+        <!-- Page Wrapper -->
+        <div id="wrapper">
+
+            <!-- Sidebar -->
+            <!--    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled" id="accordionSidebar">
+            
+                     Sidebar - Brand 
+                    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                      <div class="sidebar-brand-icon rotate-n-15">
+                        <i class="fas fa-sun"></i>
+                      </div>
+                      <div class="sidebar-brand-text mx-3">Asamblea</div>
+                    </a>
+              
+                     Divider 
+                    <hr class="sidebar-divider my-0">
+                     Divider 
+                    <hr class="sidebar-divider d-none d-md-block">
+              
+                     Sidebar Toggler (Sidebar) 
+                    <div class="text-center d-none d-md-inline">
+                      <button class="rounded-circle border-0" id="sidebarToggle"></button>
+                    </div>
+              
+                  </ul>-->
+            <!-- End of Sidebar -->
+
+            <!-- Content Wrapper -->
+            <div id="content-wrapper" class="d-flex flex-column">
+
+                <!-- Main Content -->
+                <div id="content">
+
+                    <!-- Topbar -->
+                    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top">
+
+                       
+                      <div class="topbar-divider d-none d-sm-block"></div>
+                      <ul class="navbar-nav ml-auto">
+                          <li class="nav-item">
+                              <a class="nav-link" href="index.html">
+                                <i class="fas fa-fw fa-chart-area"></i>
+                                <span>index</span></a>
+                          </li>
+                      </ul>
+
+                    </nav>
+                    <!-- End of Topbar -->
+
+                    <!-- Begin Page Content -->
+                    <div class="container-fluid">
+                        <!-- Page Heading -->
+                        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                            <h1 class="h3 mb-0 text-gray-800">Comparaciones</h1>
+                        </div>
+
+                        <!-- Entidades-->
+                        <div class="row">
+
+                          <div class="col-lg-12">
+                              <!-- Collapsable Card -->
+                              <div class="card mb-4">
+                                  <!-- Card Header - Accordion -->
+                                  <a href="#collapseCardExample" class="d-block card-header py-3 sectionHeader" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+                                      <h6 class="m-0 font-weight-bold text-primary sectionTitle">Entidades</h6>
+                                  </a>
+
+                                  <div class="collapse show" id="collapseCardExample">
+                                    
+
+                                      <div class="card-body border-bottom-secondary" style="height: 340px;">
+                                        <ul class="nav nav-pills mb-2" id="pills-tab" role="tablist">
+                                            <li class="nav-item">
+                                              <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Entidades</a>
+                                            </li>
+                                            <li class="nav-item">
+                                              <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Votaciones</a>
+                                            </li>
+                                            <li class="nav-item">
+                                              <a class="nav-link" id="pills-fecha-tab" data-toggle="pill" href="#pills-fecha" role="tab" aria-controls="pills-fecha" aria-selected="false">Fechas</a>
+                                            </li>
+            
+                                          </ul>
+                                          <div class="tab-content" id="pills-tabContent">
+                                            <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                                                <div class="row">
+                                                    <div class="col-lg-3">                                                    
+                                                        <div class="input-group">
+                                                            <div class="input-group-append mr-2 align-self-center">
+                                                                <a class="rounded-circle" style="color: #54575b">
+                                                                    <i class="fas fa-search fa-lg"></i>
+                                                                </a>    
+                                                            </div>
+                                                            <input onClick="this.select();" type="text" id="searchEntity" class="align-self-center form-control bg-light small" placeholder="Buscar entidad (asambleistas, partidos, regiones, comisiones) ..." aria-label="Search" aria-describedby="basic-addon2" style="border: #54575b 1px solid;" >
+                                                        </div>
+      
+                                                    </div>
+                                                    <div class="col-lg-9">
+                                                        <div class="list-group m-auto" id="entityList" ></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                                                <div class="row">
+                                                    <div class="col-lg-3">                                                    
+                                                        <div class="input-group">
+                                                            <div class="input-group-append mr-2 align-self-center">
+                                                                <a class="rounded-circle" style="color: #54575b">
+                                                                    <i class="fas fa-search fa-lg"></i>
+                                                                </a>    
+                                                            </div>
+                                                            <input onClick="this.select();" type="text" id="searchVotes" class="align-self-center form-control bg-light small" placeholder="Buscar asunto o sesion ..." aria-label="Search" aria-describedby="basic-addon2" style="border: #54575b 1px solid;" >
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-9">
+                                                        <div class="list-group m-auto" id="votaciones-list" ></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane fade" id="pills-fecha" role="tabpanel" aria-labelledby="pills-fecha-tab" >
+                                                <div class="d-flex flex-column">
+                                                    <div class="card-body2 mainSliderContainer">
+                                                        <input id="fecha-slider"/>
+                                                    </div>
+                                                    <div class="list-group m-auto" id="fechas-list" ></div>
+                                                    <div class="d-flex flex-row">
+                                                        <button  id="addAll" class="btn btn-secondary btn-sm m-1">Anadir todas</button>
+                                                        <button  id="removeAll" class="btn btn-secondary btn-sm m-1">Eliminar Todas</button>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                            
+                                          </div>
+
+                                          
+                                      </div>
+                                  </div>
+
+                              </div>
+
+                          </div>
+                        </div>
+
+                        <!-- Menu principal-->
+                        <div class="row" id="menup">
+                          <div class="col-lg-12">
+                              <!-- Basic Card Example -->
+                              <div class="card mb-4" style="border: none;">
+                                  <div class="card-header py-3" style="border: 1px solid #858585;">
+                                      
+                                      <div class="d-flex flex-row">
+                                          <a href="#content" id="link-regresar" onclick=""> <h6 class="m-0 font-weight-bold text-primary sectionTitle">Menu</h6></a>
+                                          <div class="d-flex flex-row" id="optionBar"></div>
+                                          <!--<i class="ml-2 mr-2 fas fa-angle-double-right"></i>
+                                          <h6 class="m-0 font-weight-bold text-primary sectionTitle">  sesion 420 votacion 1 </h6>}-->
+                                      </div>
+                                  </div>
+                                  <div class="card-body" style="padding-left: 0px;">
+                                      <div class="row" id="main-div">
+                                          
+                                          <!-- Area de opciones -->
+                                          <div class="col-xl-2 col-lg-2">
+                                            <br>
+                                            <br>
+                                            <br>
+                                            <!-- Mapeos -->
+                                            <div class="card mb-4">
+                                                <a href="#collapseMapeo" class="d-block card-subtitle py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+                                                    <h6 class="m-0 font-weight-bold text-primary sectionSubTitle">Opciones</h6>
+                                                </a>
+                                                <div class="collapse show" id="collapseMapeo" >
+                                                  <div class="card-body">
+                                                    <div class="p-2 d-flex flex-column" id="formColor">
+                                                        <label class="text-gray-900" for="colores-select">Pintar por: </label>
+                                                        <select id="colores-select" class="form-control">
+                                                            <option value="comisiones">Comisiones</option>
+                                                            <option value="partidos" selected>Partido</option>
+                                                            <option value="region">Región</option>
+                                                            <option value="provincia">Provincia</option>
+                                                            <option value="voto">Voto</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="p-2 d-flex flex-column" id="">
+                                                        <label class="text-gray-900" for="row'tamanio"> Tamaño de circulos: </label>
+                                                        <div><input id="row-tamanio"/></div>
+                                                    </div>
+
+                                                  </div>
+                                                </div>
+                                                
+                                            </div>
+
+                                            <!-- Votaciones -->
+                                            <div class="card mb-4">
+                                                <a href="#collapseSesiones" class="d-block card-subtitle py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+                                                    <h6 class="m-0 font-weight-bold text-primary sectionSubTitle">Sesiones</h6>
+                                                </a>
+                                                <div class="collapse show" id="collapseSesiones" >
+                                                    <div class="card-body">
+                                                        <div  class="p-2 d-flex flex-column" id="sesiones-list"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Asambleistas -->
+                                            <div class="card mb-4">
+                                                <a href="#collapseAsambleistas" class="d-block card-subtitle py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseAsambs">
+                                                    <h6 class="m-0 font-weight-bold text-primary sectionSubTitle">Asambleistas</h6>
+                                                </a>
+                                                <div class="collapse show" id="collapseAsambleistas" >
+                                                    <div class="card-body">
+                                                        <div  class="p-2 d-flex flex-column" id="asambleistas-list"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                          </div>
+                                          <!--Area de minimapa-->
+                                          <div class="col-xl-10 col-lg-10" id="div-map">
+                                              <!--Timeline area-->
+                                              <div class="d-flex flex-row">
+                                                
+                                                <div id="lineCont" class="m-4"> 
+                                                  <div id="line"></div>  
+                                                </div>
+                                              </div>
+                                              <div class="d-flex flex-row" style="justify-content: center;">
+                                                <div class="d-flex flex-column">
+                                                    <h6 class="card-text text-primary ml-4" id="asunto"  style="height: 30px;"></h6>
+                                                    <div class="d-flex justify-content-center">
+                                                        <span class="text-xs font-weight-bold text-secondary text-uppercase mb-1 ml-4"><span id="fecha">0</span></span>
+                                                        <span class="text-xs font-weight-bold text-secondary text-uppercase mb-1 ml-4"><span id="hora">0</span></span>
+                                                    </div>
+                                                </div>
+                                             </div>
+                                              
+                                              <div class="card col-xl-12 col-lg-12">
+                                                  <!--<h4 id="timecount">Time so far: <span class="cnt">0</span></h4>-->
+                                                  <div id="" class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-xl-9 col-lg-10">
+                                                            <div class="d-flex flex-row"s>
+                                                                <button  id="prev-button" class="btn btn-sm btn-primary m-1"><i class="fas fa-arrow-left"></i></button>
+                                                                <button  id="play-button" class="btn btn-sm btn-primary m-1">Play</button>
+                                                                <button  id="next-button" class="btn btn-sm btn-primary m-1"><i class="fas fa-arrow-right"></i></button>
+                                                            </div>
+                                                            <div class="row" id="chart" ></div>
+                                                        </div>    
+                                                        <div class="col-xl-3 col-lg-2" id="buscadorAsambleistas">
+                                                            <div class="d-flex flex-column">
+                                                                <div class="input-group">
+                                                                    <div class="input-group-append mr-2 align-self-center">
+                                                                        <a class="rounded-circle" style="color: #54575b">
+                                                                            <i class="fas fa-search fa-lg"></i>
+                                                                        </a>    
+                                                                    </div>
+                                                                    <input onClick="this.select();" type="text" id="buscarAsamb" class="align-self-center form-control bg-light small" placeholder="Resaltar Asambleistas ..." aria-label="Search" aria-describedby="basic-addon2" style="height: 30px;" >
+                                                                </div>
+                                                                <div class="list-group mt-2" id="pinnedList" ></div>
+                                                                <div class="list-group mt-1" id="asambleistasList" ></div>
+                                                            </div>
+                                                        </div>    
+                                                    </div>
+                                                </div> 
+                                                
+                                              </div> 
+                                          </div>
+
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+
+                        </div>
+                        <!-- /.container-fluid -->
+
+                        <br>
+                        <br>
+                        <br>
+                        <div class="row" id="row-table">
+                            <div class="col-xl-2 col-lg-2"></div>
+                             <!--Tabla de asambleistas-->
+                             <div class=" card col-xl-10 col-lg-10" id="div-table">
+                                <div class="card-header py-3" id="table-body">
+                                    <h6 class="m-0 font-weight-bold text-primary">Asambleistas mostrados</h6>
+                                </div>
+                                <div class="card-body" id="table-body" >
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="dataTable"  cellspacing="0">
+                                        </table>
+                                    </div>
+
+                                </div> 
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- End of Main Content -->
+
+                    <!-- Footer -->
+                    <footer class="sticky-footer bg-white">
+                        <div class="container my-auto">
+                            <div class="copyright text-center my-auto">
+                                <span> example &copy; example 2020</span>
+                            </div>
+                        </div>
+                    </footer>
+                    <!-- End of Footer -->
+
+                </div>
+                <!-- End of Content Wrapper -->
+            </div>
+            <!-- End of Page Wrapper -->
+
+            <!-- Scroll to Top Button-->
+            <a class="scroll-to-top rounded" href="#page-top">
+                <i class="fas fa-angle-up"></i>
+            </a>
+
+
+            <!-- Zona de scripts-->
+
+            <!-- Bootstrap core -->
+            <script src="shared/jquery/jquery.min.js"></script>
+                     
+            <!-- D3 js core-->
+            <script src="shared/d3/d3.min.js"></script>
+            <script src="shared/d3/d3-tip.js"></script>
+            <script src="shared/d3/d3-array.min.js"></script>
+
+            <!--Ion range slider core-->
+            <script src="shared/ionRangeSlider/ion.rangeSlider.min.js"></script>
+           
+            <!--Alertify-->
+            <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+            <!--Multiselect-->
+            <script src="shared/bootstrap-multiselect/bootstrap-multiselect.js"></script>
+            <!-- Datatables -->
+            <script src="shared/datatables/jquery.dataTables.min.js"></script>
+            <script src="shared/datatables/dataTables.bootstrap4.min.js"></script>
+
+            <!-- Custom scripts for all pages-->
+            <script src="js/sb-admin-2.min.js"></script>
+            <script src="shared/bootstrap/js/bootstrap.bundle.min.js"></script>  
+
+            <!-- Custom Scripts-->
+            <script src="js/components/buscador.js"></script>
+            <!--<script src="js/entidadesTest.js"></script>-->
+            <!-- <script src="js/Ev2.js"></script>-->
+            <script src="js/entidades/entidades.js"></script>
+            <script src="js/entidades/timeline.js"></script>
+            <script src="js/entidades/opciones.js"></script>
+            
+    </body>
+</html>
+
+

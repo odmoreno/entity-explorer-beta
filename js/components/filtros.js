@@ -1,0 +1,3 @@
+/** 
+ * Funciones para los filtros
+ */
