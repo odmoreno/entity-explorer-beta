@@ -1,0 +1,26 @@
+body{
+  background-color: #f8f9fc;
+}
+
+.menuOp{
+  position: absolute;
+  z-index: 1000;
+  right: 0;
+  left: auto;
+  border: 1px solid #e3e6f0;
+  border-radius: 0.35rem;
+  background-color: #fff;
+  background-clip: padding-box;
+  
+}
+
+.dropdown-header {
+  font-weight: 800;
+  font-size: .65rem;
+  color: #b7b9cc;
+  text-transform: uppercase!important;
+}
+
+.navbar-expand .navbar-nav .menuOp {
+  position: absolute;
+}
