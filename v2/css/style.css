@@ -24,3 +24,107 @@ body{
 .navbar-expand .navbar-nav .menuOp {
   position: absolute;
 }
+
+#asambleistasList {
+  max-width: auto;
+  overflow: scroll; 
+  overflow-x: auto;
+  max-height: 510px;
+  opacity: 0.9;
+  transition: visibility 0.2s, opacity 0.2s;
+  scrollbar-color: dark;
+}
+
+
+#entity-list {
+  max-width: auto;
+  overflow: scroll; 
+  overflow-x: auto;
+  max-height: 610px;
+  opacity: 0.9;
+  transition: visibility 0.2s, opacity 0.2s;
+  scrollbar-color: dark;
+}
+
+
+/*Estilos para el timeline horizontal*/
+
+#lineCont {
+  width: 100%;
+  height: 10%;
+}
+
+#line {
+  height: 4px;
+  width: 100%;
+  background: #034EA2;
+  border-radius: 5px;
+  margin: auto;
+  top: 50%;
+  transform: translateY(-50%);
+  position: relative;
+}
+
+#span {
+  display: none;
+  width: 70%;
+  margin: auto;
+  margin-top: 25%;
+  text-align: center;
+  color: white;
+}
+
+.cuadradoL {
+  width: 20px;
+  height: 20px;
+  background: #f6c23e;
+  border-radius: 15px;
+  position: absolute;
+  top: -7px;
+  border: 2px solid #034EA2;
+  cursor: pointer;
+  transition: all 0.1s ease-in;
+}
+.cuadradoL:before {
+  content: '';
+  width: 9px;
+  height: 10px;
+  background: #034EA2;
+  position: absolute;
+  border-radius: 100%;
+  top: 2px; 
+  left: 2px;
+  display: none;
+  transition: all 0.1s ease;
+}
+.cuadradoL .popupSpan {
+  width: auto;
+  height: auto;
+  padding: 10px;
+  white-space: nowrap;
+  display: inline-block;
+  color: black;
+  position: absolute;
+  top: 20px;
+  left: -75px;
+  display: none;
+  transition: all 0.1s ease-out;
+}
+.cuadradoL.hover:before, .cuadradoL.active:before {
+  display: block;
+}
+.cuadradoL.hover .popupSpan, .cuadradoL.active .popupSpan {
+  display: block;
+}
+.cuadradoL.active .popupSpan {
+  top: -40px;
+}
+
+/*Fin de estilos del timeline*/
+
+
+/*Animacion de collapse**/
+
+.collapsing {
+  transition: height 0.30s ease !important;
+}

@@ -86,6 +86,17 @@
         <div class="row" id="menup">
           <!--Area de minimapa-->
           <div class="col-xl-9 col-lg-9" id="div-map">
+            
+            <div class="d-flex flex-row" style="justify-content: center;">
+              <div class="d-flex flex-column">
+                  <h6 class="card-text text-primary ml-4" id="asunto"  style="height: 30px;"></h6>
+                  <div class="d-flex justify-content-center">
+                      <span class="text-xs font-weight-bold text-secondary text-uppercase mb-1 ml-4"><span id="fecha">0</span></span>
+                      <span class="text-xs font-weight-bold text-secondary text-uppercase mb-1 ml-4"><span id="hora">0</span></span>
+                  </div>
+              </div>
+            </div>
+
             <div class="card col-xl-12 col-lg-12">
               <!--<h4 id="timecount">Time so far: <span class="cnt">0</span></h4>-->
               <div id="" class="card-body">
@@ -97,6 +108,7 @@
                         <button  id="next-button" class="btn btn-sm btn-primary m-1"><i class="fas fa-arrow-right"></i></button>
                     </div>
                     <div class="row" id="chart" ></div>
+                    
                   </div>    
                   <div class="col-xl-3 col-lg-2" id="buscadorAsambleistas">
                     <div class="d-flex flex-column">
@@ -111,14 +123,35 @@
                         <div class="list-group mt-2" id="pinnedList" ></div>
                         <div class="list-group mt-1" id="asambleistasList" ></div>
                     </div>
-                  </div>    
+                  </div>   
+                </div>
+                <div id="areabuscadordeSesiones">
+                  <!--Timeline area-->
+                  <div class="mt-4 d-flex flex-row" id="timeline">         
+                    <div id="lineCont" class="m-4"> 
+                      <div id="line"></div>  
+                    </div>
+                  </div>
+                  <br>
+                  <div class="card mb-4">
+                    <!-- Card Header - Accordion -->
+                    <a href="#collapseCardExample"  class="d-block card-header py-3 sectionHeader" data-toggle="collapse" role="button" aria-expanded="true" 
+                       aria-controls="collapseCardExample">
+                        Votaciones
+                    </a>
+                    <div class="collapse show" id="collapseCardExample">
+                      <div class="card-body">
+                        <div id="eventdrops-timeline"></div>   
+                      </div>
+                    </div>
+                  </div>
               </div>
-            </div> 
-            
+              </div> 
+              
             </div> 
           </div>
           
-          <!-- Asambleistas -->
+          <!-- Entidades -->
           <div class="col-xl-3 col-lg-3">
             <div class="card mb-4">
               <a href="#collapseAsambleistas" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseAsambs">
@@ -127,22 +160,28 @@
               <div class="collapse show" id="collapseAsambleistas" >
                   <div class="card-body">
                       
-                    <div class="input-group">
-                        <div class="input-group-append mr-2 align-self-center">
-                            <a class="rounded-circle" style="color: #54575b">
-                                <i class="fas fa-search fa-lg"></i>
-                            </a>    
-                        </div>
-                        <input onClick="this.select();" type="text" id="searchEntity" class="align-self-center form-control bg-light small" placeholder="Buscar entidad (asambleistas, partidos, regiones, comisiones) ..." aria-label="Search" aria-describedby="basic-addon2" style="border: #54575b 1px solid;" >
+                    <div class="mb-4 input-group">
+                      <div class="input-group-append mr-2 align-self-center">
+                          <a class="rounded-circle" style="color: #54575b">
+                              <i class="fas fa-search fa-lg"></i>
+                          </a>    
                       </div>
+                      <input onClick="this.select();" type="text" id="searchEntity" class="align-self-center form-control bg-light small" placeholder="Buscar entidad (asambleistas, partidos, regiones, comisiones) ..." aria-label="Search" aria-describedby="basic-addon2" style="border: #54575b 1px solid;" >
+                    </div>
 
-                      <div  class="p-2 d-flex flex-column" id="asambleistas-list"></div>
+                    <div  class="p-2 d-flex flex-column" id="entity-list"></div>
                   </div>
               </div>
             </div>
           </div>
 
-          <div class="col-lg-12" id="areabuscadordeSesiones"></div>
+          <div class="col-lg-12" id="areabuscadordeSesiones1">
+            
+
+
+          </div>
+
+
         </div>
 
       </div>
@@ -166,10 +205,18 @@
   <script src="../shared/d3/d3-tip.js"></script>
   <script src="../shared/d3/d3-array.min.js"></script>
 
-
   <!-- Custom scripts for all pages-->
   <script src="../shared/sb2admin/sb-admin-2.min.js"></script>
   <script src="../shared/bootstrap/js/bootstrap.bundle.min.js"></script> 
+
+  <script src="https://unpkg.com/event-drops@1.2.0/dist/index.js"></script>
+
+  <!-- Custom Scripts-->
+  <script src="js/main.js"></script>
+  <script src="js/components/opciones.js"></script>
+  <script src="js/components/timelineEvents.js"></script>
+  <script src="js/components/timeline2.js"></script>
+
 
 </body>
 
