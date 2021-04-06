@@ -80,26 +80,72 @@ let entityList = document.getElementById('entity-list');
 
 function initializeList (nodos) {
   let list = Object.values(nodos)
-  //console.log("LIST:", list)
+  console.log("LIST:", list)
+  list.sort(value => { return value.visitado ? -1 : 1})
   //entityList.innerHTML = ''
   const html = list.map(element => 
-    `<div class="d-flex flex-column ml-4">
+    `<div  id="e${element.numeroId}"  class="d-flex flex-column ml-4" 
+        draggable="${!element.visitado ? true : false}" ondragstart="drag(event)" 
+          onmouseover="overEntity(${element.numeroId})" onmouseleave="onLeaveEntity(${element.numeroId})">
         
         <div  class=" d-flex flex-row l mb-1" style="align-items: center;">
 
           <svg height="12" width="12" class="mr-3"><circle cx="5" cy="5" r="5"  fill="${color(element, colorMap)}" /></svg>
 
-          <span style="color: #54575b; font-weight: bold; text-transform:capitalize"> ${element.nombre} </span>
+          <span  class="${element.visitado ? 'entitySelected': 'entityAway'}"  > ${element.nombre} </span>
         </div>
     </div>`
   ).join('');
 
   //console.log("html:", html)
   entityList.innerHTML += html
-
 }
 
 
+function overEntity(id){
+  //console.log("ID ENTITY:", id)
+  let element = nodosActuales[id]
+  //console.log(element)
+  if(element.visitado){
+    d3.select("#node"+id).attr("stroke", "orange").attr("stroke-width", 3.0)
+    d3.select('#text' + id).attr("visibility", "visible")
+    //tip3.show(element)
+  }
+    
+    
+}
+
+function onLeaveEntity(id){
+  let element = nodosActuales[id]
+  d3.select("#node"+id).attr("stroke", "#fff").attr("stroke-width", 0)
+  d3.select('#text' + id).attr("visibility", "hidden")
+  //if(element.visitado)
+    //tip3.hide()
+}
+
+function drag(ev) {
+  ev.dataTransfer.setData("text", ev.target.id);
+}
+
+function allowDrop(ev) {
+  ev.preventDefault();
+}
+
+function drop(ev) {
+  ev.preventDefault();
+  console.log("Hola, ingreso de entidad en el svg")
+  var data = ev.dataTransfer.getData("text")
+  var id = document.getElementById(data)
+  var x = ev.offsetX
+  var y = ev.offsetY
+  console.log(ev)
+  console.log(data, x, y)
+  //console.log(d3.select(ev.target).attr('id'))
+  console.log(id)
+  onGetIdList(data, x, y)
+ // var data = ev.dataTransfer.getData("text");
+ // ev.target.appendChild(document.getElementById(data));
+}
 
 function findEntities (searchText) {
   entityList.innerHTML = ''
@@ -261,16 +307,36 @@ buscarProvinciasOpciones = (list) => {
 }
 
 
+
 /**Checkear las entidades y meterlas al canvass */
-function onGetIdList(id){
-  console.log(id)
+function onGetIdList(id, x , y){
+  console.log("ADD:", id, x , y)
   let idnew = id.substring(1)
   console.log(idnew)
 
   let element = asambleistas[idnew]
 
+  if(element.visitado == false){
+    if (!(element.numeroId in entidades)){
+      entidades[element.numeroId] = element
+      entidades[element.numeroId].xOffset = x +170
+      entidades[element.numeroId].yOffset = y +80
+      console.log(entidades, d3.values(entidades).length)
+    }
+    else{
+      entidades[element.numeroId].visitado = true
+    }
+    element.visitado = true
+    console.log("checked", element.visitado);
+    updateNodes()
+  }
+  else {
+    entidades[element.numeroId].visitado = false
+    updateNodes()
+  }
 
-  if (document.getElementById(id).checked) {
+  /**
+   *  if (document.getElementById(id).checked) {
     element.visitado = true
     if (!(element.numeroId in entidades)){
       entidades[element.numeroId] = element
@@ -290,6 +356,7 @@ function onGetIdList(id){
     updateNodes()
 
   }
+   */
   
 }
 
@@ -303,8 +370,10 @@ function updateNodes () {
   nodes = createNodes(newnodes, groups)
   colorMap = $('#colores-select').val() 
 
-  d3.timeout(chart, 400)
-  updateTable(nodes)
+  entityList.innerHTML = ''
+  initializeList(nodosActuales)
+  d3.timeout(chart, 500)
+  //updateTable(nodes)
 }
 
 function outputEntidades (matches, option) {
@@ -446,3 +515,112 @@ fueradelbuscador = () => {
 }
 
 /** Fin del buscador de asambleistas */
+
+/**Zona para buscar votaciones */
+
+const votesList = document.getElementById('votesList');
+
+function searchSesiones(searchText) {
+    
+  let word = validateInput(searchText)
+  LOGO && console.log("search: ", word)
+  let ses = Object.values(sesiones)
+  
+  let matches = filterData(word, ses)
+ 
+  if (searchText.length === 0) {
+      matches = []
+      votesList.innerHTML = ''
+  }
+  if (matches.length > 13)
+      matches = matches.slice(0, 13)
+
+      LOGO && console.log("data:", matches)
+  outputSesiones(matches)
+}
+//${match.asunto.substr(0, 200)}
+function outputSesiones(matches) {
+  if (matches.length > 0) {
+      const html = matches.map(match =>
+              `<div class="d-flex flex-row">
+        <a   id=${match.sesId}
+        class="list-group-item list-group-item-action mb-1 " >
+            ${ sesFlag ? ' ': `<span style="color: #034EA2; font-weight: bold;"> Sesión ${match.sesion}</span>`}
+            <span style="color: #034EA2; font-weight: bold;"> Votación ${match.votacion}</span>
+            <span style="color: #54575b;"> (${match.fecha} ${match.hora}): </span>
+            <span> ${ match.bold ? match.bold : match.asunto } ... </span> 
+        </a>
+      </div>`).
+              join('');
+      //console.log(html)
+      // matchList.innerHTML = html 
+      votesList.innerHTML = html
+  } else{
+      const noData = ` <div class="d-flex justify-content-center" style="margin: auto">
+                          <span style="color: #034EA2; font-weight: bold; margin-top: 20px;"> No hay resultados </span>
+                      </div>`
+      votesList.innerHTML = noData;
+  }
+}
+
+//valida si ingreso algun numero que pueda ser una sesion
+function validateInput (text) {
+  let value = text
+  let searchSes = text.split(" ")
+  numberFlag = false
+  //asuntoFlag = true
+  searchSes.forEach(function (word) {
+      let num1 = parseInt(word)
+      LOGO && console.log(num1)
+      if(!isNaN(num1)){
+          LOGO && console.log("Es un numero: ", num1)
+          value = word
+          numberFlag = true
+          //asuntoFlag = false
+      }
+  })
+  return value
+} 
+
+function filterData (text, ses) {
+  sesFlag = false
+  let matches1 = []
+  let matches2 = ses.filter(sess => {
+      const regex2 = new RegExp(`\\b.*${text}.*?\\b`, 'gi')
+      //console.log(regex2)
+      //sess.asunto.match(regex2) .replace(regex2, '<b>'+text+'</b>')
+      
+      return sess.asunto.match(regex2)
+  });
+  if(numberFlag == true){
+      //filtrar por sesion
+      matches1 = ses.filter(sess => {
+          const regex = new RegExp(`^${text}`, 'gi')
+          //console.log(regex)
+          let sesionN = sess.sesion.toString();
+          if(sesionN === text) sesFlag = true
+          return sesionN.match(regex) 
+      });
+  }
+  LOGO && console.log("Sesiones:", matches1)
+  LOGO && console.log("Asuntos:", matches2)
+  if(matches1.length > 0) {
+      //sesFlag = true
+      matches1.sort((a,b) => (a.votacion > b.votacion) ? 1 : ((b.votacion > a.votacion) ? -1 : 0))
+      return matches1
+  }
+  else{
+      LOGO && console.log(matches2)
+      let words = matches2.map(match => {
+          var newtext = match.asunto.replace(text, '<b>'+text+'</b>')
+          //console.log(newtext)
+          match.bold = newtext
+          return match
+      })
+
+      LOGO && console.log(words)
+
+      return words
+  }
+  
+}

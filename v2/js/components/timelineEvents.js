@@ -55,6 +55,7 @@ const chartDrop = eventDrops({
   },
   drop: {
     date: d => d.fecha,
+    id : d => d.numeroId,
     color: d=> colorAge[d.anio],
     onClick: d => {
       //console.log(`Sesion ${d.sesId}  de ${d.name} has been clicked!`);

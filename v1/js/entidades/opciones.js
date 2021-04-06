@@ -182,7 +182,7 @@ function onGetIdList(id){
     element.visitado = true
     if (!(element.numeroId in entidades)){
       entidades[element.numeroId] = element
-      console.log(entidades, d3.values(entidades).length)
+      console.log("Add entity: ",entidades, d3.values(entidades).length)
     }
     else{
       entidades[element.numeroId].visitado = true

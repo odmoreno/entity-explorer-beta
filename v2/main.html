@@ -17,7 +17,7 @@
   <!--Multiselect-->
   <link rel="stylesheet" href="../shared/bootstrap-multiselect/bootstrap-multiselect.css">
   <!--D3 tips-->
-  <link rel="stylesheet" href="shared/d3/d3-tip.css">
+  <link rel="stylesheet" href="../shared/d3/d3-tip.css">
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Mulish&display=swap" rel="stylesheet">
@@ -142,10 +142,22 @@
                     <div class="collapse show" id="collapseCardExample">
                       <div class="card-body">
                         <div id="eventdrops-timeline"></div>   
+                        <div id="searchVotesArea">
+                          <div class="mb-4 input-group">
+                            <div class="input-group-append mr-2 align-self-center">
+                                <a class="rounded-circle" style="color: #54575b">
+                                    <i class="fas fa-search fa-lg"></i>
+                                </a>    
+                            </div>
+                            <input onClick="this.select();" type="text" id="searchVotes" class="align-self-center form-control bg-light small" placeholder="Buscar Votaciones ..." aria-label="Search" aria-describedby="basic-addon2" style="border: #54575b 1px solid;" >
+                          </div>
+      
+                          <div  class="p-2 d-flex flex-column" id="votesList"></div>
+                        </div>
                       </div>
                     </div>
                   </div>
-              </div>
+                </div>
               </div> 
               
             </div> 
@@ -210,6 +222,7 @@
   <script src="../shared/bootstrap/js/bootstrap.bundle.min.js"></script> 
 
   <script src="https://unpkg.com/event-drops@1.2.0/dist/index.js"></script>
+  
 
   <!-- Custom Scripts-->
   <script src="js/main.js"></script>

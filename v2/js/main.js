@@ -3,6 +3,7 @@
  *    Comparar entidades (asambleistas) v.2
  */
 
+
 var LOG = true
 
 var margin = {left: 80, right: 20, top: 70, bottom: 100};
@@ -63,11 +64,14 @@ let codeVotes = {
 let votesSet = [0, 1, 2, 3, 4]
 
 
+
 /** D3 html  */
 const svg = d3.select("#chart").append("svg")
   .attr("viewBox", [-width / 2, (-height / 2) - 25, width - 100 , height])
   .attr("width", width) // + margin.left + margin.right)
   .attr("height", height) // + margin.top + margin.bottom)
+  .attr("ondrop", "drop(event)")
+  .attr("ondragover", "allowDrop(event)")
   .append("g")
   .attr("transform", "translate(" + (-width/2 -50) + "," + (-height / 2) + ")");
 
@@ -118,6 +122,21 @@ $("#searchEntity")
   })
   .on("click", function () {
       findEntities(this.value)
+  })
+
+
+  //Buscar los votos  
+  $("#searchVotes")
+  .on("input", function () {
+      //LOG && console.log('On input', this.value)
+      //resetFlags()
+      let value =  this.value
+      searchSesiones(value)
+  })
+  .on("click", function () {
+      //LOG && console.log('On click', this.value)
+      //resetFlags()
+      searchSesiones(this.value)
   })
 
   $("#buscarAsamb")
@@ -275,7 +294,9 @@ function testChart(){
 
   chart()
   initializeList(nodosActuales)
-  console.log("Nodos Actuales :", nodosActuales)
+  console.log("Nodos Actuales :", Object.values(nodosActuales).length ,nodosActuales)
+  console.log("entidades: ", Object.values(entidades).length, entidades)
+  console.log("newnodes: ", Object.values(newnodos).length, newnodos)
   //console.log("Nodes:", nodes)
 }
 
@@ -292,6 +313,8 @@ function updateSesion(sesion){
         entidades[_asamb.id].lastvote = entidades[_asamb.id].voto
         entidades[_asamb.id].voto = codeVotes[_asamb.voto]
         entidades[_asamb.id].curul = _asamb.curul
+        entidades[_asamb.id].xOffset = 500
+        entidades[_asamb.id].yOffset = 300
         //entidades[_asamb.id].labelFlag = false
         nodosActuales[_asamb.id].visitado = true
     }
@@ -317,10 +340,9 @@ function updateChart(id){
   nodes = createNodes(newnodos, groups)
 
   updateInfoChart(data)
-  
-  d3.timeout(chart, 500)
 
   initializeList(nodosActuales)
+  d3.timeout(chart, 500)
 
   //updateTable(nodes)
 }
@@ -332,13 +354,31 @@ function chart() {
     .join(
       enter => enter.append("circle")
           .call( enter => enter
-                               .attr("id", d=> d.id)
-                               .attr("cx", d => d.x)
-                               .attr("cy", d => d.y)
-                               .attr("r", d => d.r)
-                               .attr("fill", d => color(d, colorMap))
-                               .attr("stroke", "orange")
-                               .attr("stroke-width", d => d.labelFlag ? 3.0 : 0)),
+            .attr("id", d=> d.id)
+            .attr("cx", d => { 
+              //console.log(d.xOffset, d.yOffset, d)
+              return d.xOffset
+            })
+            .attr("cy", d => d.yOffset)
+            .attr("r", d => d.r)
+            .attr("fill", d => color(d, colorMap))
+            .attr("stroke", "orange")
+            .attr("stroke-width", d => d.labelFlag ? 3.0 : 0))
+          .call( enter => enter.select('circle')//.transition().duration(150)
+            .attr("cx", d => d.x)
+            .attr("cy", d => d.y))
+          .call(d3.drag()
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended)),
+          //.call( enter => enter
+          //  .attr("id", d=> d.id)
+          //  .attr("cx", d => d.x)
+          //  .attr("cy", d => d.y)
+          //  .attr("r", d => d.r)
+          //  .attr("fill", d => color(d, colorMap))
+          //  .attr("stroke", "orange")
+          //  .attr("stroke-width", d => d.labelFlag ? 3.0 : 0)),
       update => update
           .attr("r", radius)
           .attr("cx", d => {if(d.voto != d.lastvoto) return d.x})
@@ -349,14 +389,6 @@ function chart() {
     )
     
   circle.on("mouseover", tip.show).on("mouseout", tip.hide)
-
-  //circle.transition()
-  //  .delay((d, i) =>  i * 5)
-  //  .duration(800)
-  //  .attrTween("r", d => {
-  //    const i = d3.interpolate(0, d.r);
-  //    return t => d.r = i(t);
-  //  });
 
   texts = texts
       .data(nodes, d=> d.id)
@@ -388,7 +420,7 @@ function chart() {
   simulation.on("tick", () => {
     circle
       .transition()
-      .duration(30)
+      .duration(40)
         .attr("cx", d => d.x)
         .attr("cy", d => d.y)
 
@@ -481,6 +513,49 @@ dataGroup = (newnodes, groupMap) => {
 
   return group;
 }
+
+// Drag functions used for interactivity
+function dragstarted(d) {
+  if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+  d.fx = d.x;
+  d.fy = d.y;
+}
+
+function dragged(d) {
+  d.fx = d3.event.x;
+  d.fy = d3.event.y;
+}
+
+function dragended(d) {
+  if (!d3.event.active) simulation.alphaTarget(0);
+  d.fx = null;
+  d.fy = null;
+  console.log(d3.select('svg'))
+    console.log("Draggend:", d)
+    console.log("Draggend x :", d.x)
+    console.log("Draggend y :", d.y)
+    if(d.x > 940){
+      console.log("fuera del rango permitido")
+      entidades[d.numeroid].visitado = false
+      updateChartEntitys()
+    }
+}
+
+function updateChartEntitys(){
+    let newnodes = []
+    for (let key in entidades) {
+      if(entidades[key].visitado == true) newnodes.push(entidades[key])
+    }
+    groups = _groups()
+    nodes = createNodes(newnodes, groups)
+    colorMap = $('#colores-select').val() 
+  
+    entityList.innerHTML = ''
+    initializeList(nodosActuales)
+    d3.timeout(chart, 500)
+    //updateTable(nodes)
+}
+
 //Function para crear los grupos de todos los asambleistas y usarlos en el buscador.js 
 createGroups = () => {
   let list = Object.values(asambleistas)
@@ -556,6 +631,8 @@ createNodes = (nodos, groups) => {
       numeroid: d.numeroId,
       x: groups[d.voto].x + Math.random(), // * (-10 - 60) + (-10),
       y: groups[d.voto].y + Math.random(), // * (-10 - 60) + (-10),
+      xOffset : d.xOffset,
+      yOffset : d.yOffset,
       r: radius,
       voto : d.voto,
       lastvoto : d.lastvote,

@@ -128,3 +128,21 @@ body{
 .collapsing {
   transition: height 0.30s ease !important;
 }
+
+.entity{
+  display: block;
+}
+
+/**style="color: #54575b; font-weight: bold; text-transform:capitalize"*/
+.entitySelected{
+  color: #54575b; 
+  font-weight: bold; 
+  text-transform:capitalize
+}
+
+.entityAway{
+  color: #54575b; 
+  font-weight: 400; 
+  text-transform:capitalize
+}
+
