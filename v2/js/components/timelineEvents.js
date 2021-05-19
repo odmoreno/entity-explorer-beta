@@ -5,8 +5,20 @@
 var global = global || window;
 const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
+var scale = 1.0;
+var clickScale = 2.0;
+
+var dictEventos = {}
+
+var zoomTL = d3.zoom()
+    //.scale(scale)
+    .scaleExtent([1, 5])
+    .on("zoom", zoomed);
 
 //var width = $('#eventdrops-timeline').width()
+
+var container, vx, vy, vw, vh, defaultView;
+
 
 var es_ES = {
   "decimal": ",",
@@ -98,15 +110,19 @@ const chartDrop = eventDrops({
     tickPadding: 10,
   },
   zoom: {
-    onZoomStart: null,
-    onZoom: null,
-    onZoomEnd: null,
+    onZoomStart: e => {
+      console.log('start:', e)
+    },
+    onZoom: e => { console.log( 'on:', e)},
+    onZoomEnd: e => { 
+      console.log( 'end:', e)
+      var transform = d3.zoomIdentity;
+  console.log("trans:", transform, transform.translate)
+    },
     minimumScale: 1,
     maximumScale: Infinity,
   },
 });
-
-//const repositoriesData;
 
 
 function createTimelineEvent(){
@@ -130,12 +146,11 @@ function createTimelineEvent(){
   console.log(newList)
   
   let v2017 = newList.filter(v => v.anio == '2017')
-  console.log('v2017:', v2017)
+  //console.log('v2017:', v2017)
   let v2018 = newList.filter(v => v.anio == '2018')
-  console.log('v2018:', v2018)
+  //console.log('v2018:', v2018)
   let v2019 = newList.filter(v => v.anio == '2019')
-  console.log('v2019:', v2019)
-  
+  //console.log('v2019:', v2019)
   let v2020 = newList.filter(v => v.anio == '2020')
   console.log('v2020:', v2020)
   
@@ -165,10 +180,74 @@ function createTimelineEvent(){
     //.attr('width', width)
     .call(tip2)
 
-  console.log("CHART:", svgTimeline)
+  console.log("CHART:", svgTimeline, divTimeline[0])
+
+  let alldrops = d3.selectAll('.drop')
+  
+  console.log("drops:", alldrops)
+
+  getPosSvg()
+  
+  d3.selectAll('.drop').each(function(d, i) {
+    d.cx = d3.select(this).attr('cx')
+    console.log("element:", i, d)
+    d3.select(this).attr('id', 'n'+d.sesId)
+    console.log(this, d3.select(this).attr('cx') )  
+    dictEventos[d.sesId] = 1
+  });
 
 }
 
 
+function searchVote(id){
+  console.log("vote:", id)
+
+  var node = d3.select('#n'+id);
+  console.log("evento:", node)
+  console.log("dictEv:", dictEventos[id])
+
+  console.log()
+  container.transition().call(zoomTL.scaleBy, 1)
+
+  var transform = d3.zoomIdentity;
+  console.log("trans:", transform, transform.translate)
+
+  //var transform = getTransform(node, clickScale);
+  //console.log("trans:", transform, transform.translate)
+//
+  //container.transition().duration(1000)
+  //   .attr("transform", "translate(" + transform.translate + ")");
+}
+
+function getTransform(node, xScale) {
+  var bbox = node.node().getBBox();
+  console.log(bbox)
+  var bx = bbox.x;
+  var by = bbox.y;
+  var bw = bbox.width;
+  var bh = bbox.height;
+  var tx = -bx*xScale + vx + vw/2 - bw*xScale/2;
+  var ty = -by*xScale + vy + vh/2 - bh*xScale/2;
+  return {translate: [tx, ty], scale: xScale}
+
+}
+
+function getPosSvg(){
+  container = d3.select('#eventdrops-timeline').select('svg')
+  var bbox = container.node().getBBox();
+  console.log("Container:", container)
+  vx = bbox.x;		// container x co-ordinate
+  vy = bbox.y;		// container y co-ordinate
+  vw = bbox.width;	// container width
+  vh = bbox.height;	// container height
+  defaultView = "" + vx + " " + vy + " " + vw + " " + vh;
+  console.log(vx,vy,vw,vh)
+
+  container.attr("viewBox", defaultView)
+
+}
 
 
+function zoomed() {
+
+}

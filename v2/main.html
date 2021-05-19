@@ -126,15 +126,16 @@
                   </div>   
                 </div>
                 <div id="areabuscadordeSesiones">
-                  <!--Timeline area-->
+                  
                   <div class="mt-4 d-flex flex-row" id="timeline">         
                     <div id="lineCont" class="m-4"> 
                       <div id="line"></div>  
                     </div>
                   </div>
+                  
                   <br>
+                  
                   <div class="card mb-4">
-                    <!-- Card Header - Accordion -->
                     <a href="#collapseCardExample"  class="d-block card-header py-3 sectionHeader" data-toggle="collapse" role="button" aria-expanded="true" 
                        aria-controls="collapseCardExample">
                         Votaciones
@@ -157,6 +158,7 @@
                       </div>
                     </div>
                   </div>
+                  
                 </div>
               </div> 
               
@@ -165,26 +167,43 @@
           
           <!-- Entidades -->
           <div class="col-xl-3 col-lg-3">
-            <div class="card mb-4">
-              <a href="#collapseAsambleistas" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseAsambs">
-                  <h6 class="m-0 font-weight-bold text-primary sectionSubTitle">Entidades</h6>
-              </a>
-              <div class="collapse show" id="collapseAsambleistas" >
-                  <div class="card-body">
-                      
-                    <div class="mb-4 input-group">
-                      <div class="input-group-append mr-2 align-self-center">
-                          <a class="rounded-circle" style="color: #54575b">
-                              <i class="fas fa-search fa-lg"></i>
-                          </a>    
-                      </div>
-                      <input onClick="this.select();" type="text" id="searchEntity" class="align-self-center form-control bg-light small" placeholder="Buscar entidad (asambleistas, partidos, regiones, comisiones) ..." aria-label="Search" aria-describedby="basic-addon2" style="border: #54575b 1px solid;" >
-                    </div>
 
-                    <div  class="p-2 d-flex flex-column" id="entity-list"></div>
+            <!-- Entidades -->
+            <div class="card  mb-4">
+              <!-- Card Header - Dropdown -->
+              <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Entidades</h6>
+                <div class="dropdown no-arrow">
+                  <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                    <div class="dropdown-header">Ordenar Por:</div>
+                    <a class="dropdown-item" onClick="sortHandler(1)">Alfabeticamente</a>
+                    <a class="dropdown-item" onClick="sortHandler(2)">Partidos</a>
+                    <a class="dropdown-item" onClick="sortHandler(3)">Regiones</a>
+                    <a class="dropdown-item" onClick="sortHandler(4)">Provincia</a>
+                    <a class="dropdown-item" onClick="sortHandler(5)">Voto</a>
                   </div>
+                </div>
+              </div>
+              <!-- Card Body -->
+              <div class="card-body">
+
+                <div class="mb-4 input-group">
+                  <div class="input-group-append mr-2 align-self-center">
+                      <a class="rounded-circle" style="color: #54575b">
+                          <i class="fas fa-search fa-lg"></i>
+                      </a>    
+                  </div>
+                  <input onClick="this.select();" type="text" id="searchEntity" class="align-self-center form-control bg-light small" placeholder="Buscar entidad (asambleistas, partidos, regiones, comisiones) ..." aria-label="Search" aria-describedby="basic-addon2" style="border: #54575b 1px solid;" >
+                </div>
+
+                <div  class="p-2 d-flex flex-column" id="entity-list"></div>
+
               </div>
             </div>
+
           </div>
 
           <div class="col-lg-12" id="areabuscadordeSesiones1">

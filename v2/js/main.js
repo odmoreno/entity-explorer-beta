@@ -293,13 +293,14 @@ function testChart(){
   //updateTable(nodes)
 
   chart()
-  initializeList(nodosActuales)
+  //initializeList(nodosActuales)
+  ListEntitys(nodosActuales)
+  
   console.log("Nodos Actuales :", Object.values(nodosActuales).length ,nodosActuales)
   console.log("entidades: ", Object.values(entidades).length, entidades)
   console.log("newnodes: ", Object.values(newnodos).length, newnodos)
   //console.log("Nodes:", nodes)
 }
-
 
 function updateSesion(sesion){
   nodosActuales = {}
@@ -343,7 +344,6 @@ function updateChart(id){
 
   initializeList(nodosActuales)
   d3.timeout(chart, 500)
-
   //updateTable(nodes)
 }
 
@@ -354,11 +354,11 @@ function chart() {
     .join(
       enter => enter.append("circle")
           .call( enter => enter
-            .attr("id", d=> d.id)
-            .attr("cx", d => { 
-              //console.log(d.xOffset, d.yOffset, d)
-              return d.xOffset
+            .attr("id", d=> {
+              console.log("Enter circle ", d.id)
+              return d.id
             })
+            .attr("cx", d => d.xOffset)
             .attr("cy", d => d.yOffset)
             .attr("r", d => d.r)
             .attr("fill", d => color(d, colorMap))
@@ -371,20 +371,12 @@ function chart() {
             .on("start", dragstarted)
             .on("drag", dragged)
             .on("end", dragended)),
-          //.call( enter => enter
-          //  .attr("id", d=> d.id)
-          //  .attr("cx", d => d.x)
-          //  .attr("cy", d => d.y)
-          //  .attr("r", d => d.r)
-          //  .attr("fill", d => color(d, colorMap))
-          //  .attr("stroke", "orange")
-          //  .attr("stroke-width", d => d.labelFlag ? 3.0 : 0)),
       update => update
-          .attr("r", radius)
-          .attr("cx", d => {if(d.voto != d.lastvoto) return d.x})
-          .attr("cy", d => {if(d.voto != d.lastvoto) return d.y})
           .attr("stroke-width", d => d.labelFlag ? 3.0 : 0)
-          .attr("fill", d => color(d, colorMap)) ,
+          .attr("fill", d => {
+            console.log("update ", d.id)
+            return color(d, colorMap)
+          }),
       exit => exit.remove()
     )
     
@@ -416,19 +408,20 @@ function chart() {
   simulation.nodes(nodes, d=> d.id)
       //.force("x",  d => d3.forceX(d.x/2).strength(.0005))
       //.force("y", d => d3.forceY(d.y/2).strength(.0005))
+
+  //simulation.force("cluster", forceCluster())
+  //          .force("collide", forceCollide())
   
   simulation.on("tick", () => {
     circle
       .transition()
-      .duration(40)
+      .duration(30)
         .attr("cx", d => d.x)
         .attr("cy", d => d.y)
 
     texts.transition().ease(d3.easeSinOut).duration(400)
       .attr("x", d => d.x + 10)//+ d.vx * .0135)
       .attr("y", d => d.y + d.vy * .0135 )
-    
-    
   });
 }
 
@@ -437,7 +430,7 @@ function chart() {
 
 // Force to increment nodes to groups.
 function forceCluster() {
-  const strength = .15;
+  const strength = .15; //.15;
   let nodes;
 
   function force(alpha) {
@@ -551,7 +544,8 @@ function updateChartEntitys(){
     colorMap = $('#colores-select').val() 
   
     entityList.innerHTML = ''
-    initializeList(nodosActuales)
+    //initializeList(nodosActuales)
+    ListEntitys(nodosActuales)
     d3.timeout(chart, 500)
     //updateTable(nodes)
 }
@@ -743,7 +737,8 @@ function resetFlags() {
 
 
 color = (d, option) => {
-  console.log("option", option)
+  //console.log("option", option)
+  //console.log("D:", d)
   if(option == "partidos"){
     //console.log("COLOR:", d)
     //console.log(partidos)

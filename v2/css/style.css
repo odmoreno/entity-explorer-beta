@@ -39,7 +39,7 @@ body{
 #entity-list {
   max-width: auto;
   overflow: scroll; 
-  overflow-x: auto;
+  /*overflow-x: auto;*/
   max-height: 610px;
   opacity: 0.9;
   transition: visibility 0.2s, opacity 0.2s;
@@ -146,3 +146,23 @@ body{
   text-transform:capitalize
 }
 
+.draggme{
+  cursor: grab;
+}
+
+.nodrag{
+  cursor: default;
+}
+
+.card-list{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  /* border: 1px solid #e3e6f0; */
+  border-bottom: 1px solid #e3e6f0;
+  border-radius: .35rem;
+}
