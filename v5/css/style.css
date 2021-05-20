@@ -34,6 +34,10 @@ body{
   grid-column: 1 / 10;
   grid-row: 4 / 5;
 }
+.six {
+  grid-column: 10 / 13;
+  grid-row: 4 / 5;
+}
 /*End grid layout*/
 
 
@@ -76,7 +80,7 @@ body{
   max-width: auto;
   overflow: scroll; 
   /*overflow-x: auto;*/
-  max-height: 685px;
+  max-height: 660px;
   opacity: 0.9;
   transition: visibility 0.2s, opacity 0.2s;
   scrollbar-color: dark;
@@ -298,8 +302,8 @@ body{
 /* create a custom sized dot at the bottom of the red item */
 
 .vis-item.vis-box {
-  height: 150px !important;
-  max-width: 200px;
+  height: 200px !important;
+  max-width: 210px;
   overflow-y: scroll;
   opacity: 1;
 }
@@ -405,7 +409,7 @@ body{
 
 /*Estilo de los items de caja de la busqueda*/
 
-.asamb-list{
+.asamb-list, .itemVotes, .itemSes{
   margin-bottom: 3px;
   border: 2px solid white
 }

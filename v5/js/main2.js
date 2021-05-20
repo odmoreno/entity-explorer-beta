@@ -3,7 +3,7 @@
  *    Explorador de entidades, conjunto de funciones y variables globales a usar en los demas componenets
  */
 
-var LOG = true
+var LOG = false
 
 //Dimensiones del chart principal
 var height = 700
@@ -35,6 +35,9 @@ let comG = [] //comisiones
 
 //dict de sesiones seleccionadas para la graficas
 let idSesiones = {}
+let lastIdS; 
+let firstIds;
+
 
 //Entidades seleccionados por el usuario 
 let entidades = {}
@@ -75,6 +78,13 @@ let votesSet = [0, 1, 2, 3, 4]
 
 let valueText = '';
 
+//Manipular slider de votos
+let listIndicesVotes = []
+let dictIVotes = {}
+let currentValueIndex=0;
+let reverseDIVotes = {}
+
+let doNotAnimate = false
 
 /*** Datos a cargar */
 const promises = [
@@ -179,12 +189,12 @@ $("#play-button")
         if (button.text() == "Play"){
           button.text("Pause"); 
           interval = setInterval(step, 2000);            
-         
         }
         else {
             button.text("Play");
             //d3.select('#reproductor').classed('fas fa-play')
             clearInterval(interval);
+            setRangeTimeline()
         }
       }
   })
@@ -209,7 +219,7 @@ $('#colores-select').multiselect({
         //editColorsNodes()
         colorMap = $('#colores-select').val()
 
-        updateChart(currentSes)
+        updateChart(currentSes, false)
     }
   });
 
@@ -225,14 +235,21 @@ $("#row-tamanio").ionRangeSlider({
       let numero = data.from
       rectSize = numero
       rectSpaceSize = rectSize + 5
-
       //console.log("nuevas medidas:", rectSize, rectSpaceSize)
       updateChart(currentSes, true)
       //d3.timeout(chart, 500)
-      
   }
 });
 
+$("#slider-votos").ionRangeSlider({
+  skin: "round",
+  min : 0,
+  max: 0, 
+  from: 0, 
+  step:1, 
+  hide_min_max: true, 
+  
+});
 //Fin de eventos
 
 /**Funciones secundarias */
@@ -279,11 +296,11 @@ createGroups = () => {
 
 _groups = () => {
   const groups = {
-    "si": { x: width/5, y: height/6, cnt: 0, fullname: "Si" },
-    "no": { x: 3.5*width/4, y: height/6, cnt: 0, fullname: "No" },
-    "ausente": { x: 3.5*width/5, y: 2*height/2.5, cnt: 0, fullname: "Ausente" },
-    "abstencion": { x: 1.5*width/5, y: 2*height/2.5, cnt: 0, fullname: "Abstención" },
-    "blanco": { x: width/2 +29, y: height/6, cnt: 0, fullname: "Blanco" },
+    "si": { x: 1.5*width/5, y: height/6, cnt: 0, fullname: "Si" },
+    "no": { x: 3.5*width/5, y: height/6, cnt: 0, fullname: "No" },
+    "ausente": { x: width/5, y: 2*height/2.5, cnt: 0, fullname: "Ausente" },
+    "abstencion": { x: 3.5*width/4, y: 2*height/2.5, cnt: 0, fullname: "Abstención" },
+    "blanco": { x: width/2 +29, y: 2*height/2.5, cnt: 0, fullname: "Blanco" },
   };
   return groups
 }
@@ -300,20 +317,31 @@ function addSesion(id){
     return;
   }else {
     idSesiones[id] = sesiones[id]
-    addCircle(id)
+    //addCircle(id)
+    listIndicesVotes.push(id)
+    updateSlider()
   }
   
   LOG && console.log("Sesiones anadidas:", idSesiones)
   currentSes = id
 
-  let sesionesID = d3.keys(idSesiones)
-  let index = sesionesID.indexOf(currentSes)
-  console.log("index:", index, "id:", currentSes)
-  currentId = index
+  //let sesionesID = d3.keys(idSesiones)
+  //let index = sesionesID.indexOf(currentSes)
+  //console.log("index:", index, "id:", currentSes)
+  //currentId = index
+
+  currentId = reverseDIVotes[id]
+  //console.log("ReverseDICT:", reverseDIVotes, "currentID:", currentId)
   
+  let valuesDICT = Object.keys(idSesiones)
+  console.log("KEYS:", valuesDICT)
+  lastIdS = valuesDICT[valuesDICT.length-1]
+  firstIds = valuesDICT[0]
+  console.log("LastVALUE:", lastIdS, "FIRST:", firstIds)
+
   //addSesionToList(id)
 
-  updateChart(id)
+  updateChart(id, false)
   
 }
 
@@ -324,19 +352,14 @@ function removeSes(id) {
 
   console.log(idSesiones)
   delete idSesiones[id]
-  
-  //d3.select("#s" + id)
-  //        .transition()
-  //        .attr('opacity', '.20')
-  //        .style("border", "1px solid red")
-  //        .delay(200)
-  //        .duration(800)
-//
-  //d3.select("#" + tmpid)
-  //        .transition()
-  //        .attr('opacity', '.50')
-  //        .duration(800)
-  //        .remove()
+}
+
+/// Resetea los valores de visitado de los nodos
+function resetFlags() {
+  for (let key in entidades) {
+      if (entidades[key].visitado == true)
+        entidades[key].visitado = false
+  }
 }
 
 
@@ -375,15 +398,6 @@ color = (d, option) => {
   }
 }
 
-
-/// Resetea los valores de visitado de los nodos
-function resetFlags() {
-  for (let key in entidades) {
-      if (entidades[key].visitado == true)
-        entidades[key].visitado = false
-  }
-}
-
 colorPartidos = (d) => {
   let partidosD = [...new Set(partidosId)]
   //console.log("colorPArtidos:", partidosD)
@@ -417,100 +431,135 @@ colorComisiones = (d) => {
   return scale(d)
 }
 
+function udpateSliderVotes(){
+  let slider = $("#slider-votos").data("ionRangeSlider");
 
-$("#play-button")
-  .on("click", function(){
-      var button = $(this);
-      if(Object.keys(idSesiones).length > 0){
-        if (button.text() == "Play"){
-          button.text("Pause"); 
-          interval = setInterval(step, 2000);            
-         
-        }
-        else {
-            button.text("Play");
-            //d3.select('#reproductor').classed('fas fa-play')
-            clearInterval(interval);
-        }
-      }
+  console.log("size:", listIndicesVotes.length, "from:", currentValueIndex)
+  let max = listIndicesVotes.length
+
+  slider.update({
+    min: 0,
+    max: max-1,
+    from: max-1,
+    step: 1, 
+    grid: false,
+    hide_min_max: true,
+    prettify: function (n) {
+        let sesId = dictIVotes[n]
+        var tag = sesiones[sesId]
+        //console.log(tag)
+        return "Sesión " + tag.sesion + " Votación " + tag.votacion
+    },  
+    onChange: function (data) {
+      let numero = data.from
+      currentValueIndex = numero
+      //console.log("numero:", currentValueIndex)
+      let sesId = dictIVotes[currentValueIndex]
+      //console.log("SESION:", sesId)
+      updateChart(sesId, false)
+    },
+    onFinish: function (data) { 
+      let numero = data.from
+      currentValueIndex = numero
+      //console.log("numero:", currentValueIndex)
+      let sesId = dictIVotes[currentValueIndex]
+      //console.log("SESION:", sesId)
+      findsesion(sesId)
+    }
+  });
+
+  console.log("SLider:", slider)
+}
+
+function updateValuesForSlider(){
+
+  console.log("current List:", listIndicesVotes)
+  listIndicesVotes.sort( (a,b) => (a > b) ? 1 : ((b > a) ? -1 : 0))
+  console.log("sorted List:", listIndicesVotes)
+
+  dictIVotes = {}
+  reverseDIVotes ={}
+  for (var i = 0; i < listIndicesVotes.length; i++) {
+    dictIVotes[i] = listIndicesVotes[i]
+    reverseDIVotes[listIndicesVotes[i]] = i
+    console.log(i, dictIVotes[i])
+  }
+
+  console.log("Dict resultante:", dictIVotes, reverseDIVotes)
+}
+
+
+function updateSlider(){
+  updateValuesForSlider()
+  udpateSliderVotes()
+}
+
+step = () =>{ 
+  
+  LOG && console.log("currentID:", currentId)
+
+  if(currentId == lastIdS){
+    LOG && console.log("limite")
+    currentId = parseInt(firstIds)
+  }
+  else if(currentId < lastIdS) {
+    currentId = parseInt(currentId)+1
+    LOG && console.log(currentId)
+  }
+
+  currentSes = dictIVotes[currentId]
+  updateChart(currentSes, false)
+
+  let slider = $("#slider-votos").data("ionRangeSlider");
+  slider.update({
+    from: currentId
+  })
+  findsesion(currentSes)
+}
+
+nextSes = () => {
+  LOG && console.log("currentID:", currentId)
+
+  if(currentId == lastIdS){
+    LOG && console.log("limite")
+    currentId = parseInt(firstIds)
+  }
+  else if(currentId < lastIdS) {
+    currentId = parseInt(currentId)+1
+    LOG && console.log(currentId)
+  }
+
+  currentSes = dictIVotes[currentId]
+  updateChart(currentSes, false)
+
+  let slider = $("#slider-votos").data("ionRangeSlider");
+  slider.update({
+    from: currentId
+  })
+  findsesion(currentSes)
+}
+
+prevSes = () => {
+
+  LOG && console.log("currentID:", currentId)
+
+  if(currentId == firstIds){
+    LOG && console.log("limite primero")
+    currentId = parseInt(lastIdS)
+  }
+  else if(currentId > firstIds) {
+    currentId = parseInt(currentId) - 1
+    LOG && console.log(currentId)
+  }
+
+  currentSes = dictIVotes[currentId]
+  updateChart(currentSes, false)
+
+  let slider = $("#slider-votos").data("ionRangeSlider");
+  slider.update({
+    from: currentId
   })
 
-$("#prev-button")
-  .on("click", function(){
-      if(Object.keys(idSesiones).length > 0){
-        prevSes()
-      }
-  })
+  findsesion(currentSes)
 
-$("#next-button")
-  .on("click", function(){
-      if(Object.keys(idSesiones).length > 0){
-        nextSes()
-      }
-  })
-
-  
-  step = () =>{
-    // At the end of our data, loop back idSesiones
-    let sesionesID = d3.keys(idSesiones)
-    let max = sesionesID[sesionesID.length-1]
-    
-    currentSes = (currentSes < max) ? sesionesID[currentId] : sesionesID[0] 
-    
-    $(".cuadradoL.active").removeClass("active");
-    d3.select("#c"+currentSes).classed('active', true)
-  
-    updateChart(currentSes)
-   
-    currentId = (currentId < sesionesID.length-1) ? (currentId + 1) : 0
-  
-    LOG && console.log("Current Id:", currentId)
-    LOG && console.log("sesiones:", sesionesID)
-  
-  }
-  
-  nextSes = () => {
-  
-    LOG && console.log("sesiones:", idSesiones)
-    
-    let sesionesID = d3.keys(idSesiones)
-    
-  
-    let max = sesionesID[sesionesID.length-1]
-    LOG && console.log("list:", sesionesID)
-    LOG && console.log("max:", max)
-  
-    currentId = (currentId < sesionesID.length-1) ? (currentId + 1) : 0
-    
-    LOG && console.log("sesion antes:", sesionesID[currentId], currentSes < max)
-    currentSes = (currentSes < max) ? sesionesID[currentId] : sesionesID[0] 
-    
-    $(".cuadradoL.active").removeClass("active");
-    d3.select("#c"+currentSes).classed('active', true)
-    updateChart(currentSes)
-  
-    LOG && console.log("Current Id:", currentId)
-    LOG && console.log("currentSes:", currentSes)
-    
-    
-  }
-  
-  prevSes = () => {
-    LOG && console.log("sesiones:", idSesiones)
-    
-  
-    let sesionesID = d3.keys(idSesiones)
-    let min = sesionesID[0]
-  
-    currentId = (currentId > 0 ) ? (currentId - 1) : sesionesID.length-1
-    currentSes = (currentSes > min) ? sesionesID[currentId] : sesionesID[sesionesID.length-1] 
-   
-    $(".cuadradoL.active").removeClass("active");
-    d3.select("#c"+currentSes).classed('active', true)
-    updateChart(currentSes)
-  
-    LOG && console.log("Current Id:", currentId)
-    LOG && console.log("currentSes:", currentSes)
-    LOG && console.log("list:", sesionesID)
-  }
-  
+}

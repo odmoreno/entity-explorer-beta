@@ -21,7 +21,7 @@ let listaResultados = document.getElementById('resultadosDiv');
 
 function ListEntitys (nodos) {
   let list = Object.values(nodos)
-  console.log("LIST:", list)
+  LOGO && console.log("LIST:", list)
   list = list.filter(element => element.visitado) 
   //list.sort(value => { return value.visitado ? -1 : 1})
   //entityList.innerHTML = ''
@@ -60,7 +60,7 @@ function ListEntitys (nodos) {
 
 function divTootltip(){
   const asambsDivs = document.querySelectorAll('.entitySelected');
-  console.log("tips:", asambsDivs);
+  LOGO && console.log("tips:", asambsDivs);
 
   asambsDivs.forEach(change => change.addEventListener("mouseover", function() {
     let id = change.id.substring(1)
@@ -114,9 +114,9 @@ function removeEntityChart(id){
 }
 
 function fijarResaltado(id){
-  console.log('Fijar ID:', id)
+  LOGO && console.log('Fijar ID:', id)
   let nodoCircle = d3.select("#node"+id)
-  console.log("Stroke:", nodoCircle.style("stroke"))
+  LOGO && console.log("Stroke:", nodoCircle.style("stroke"))
 
   nodoCircle.attr("stroke", "orange")
             .attr("stroke-width", 3.0)
@@ -167,7 +167,7 @@ function sortByOption(op, nodosDesordenados){
     list.sort((a, b) => (a.nombre > b.nombre) ? 1 : ((b.nombre > a.nombre) ? -1 : 0))
   }
 
-  console.log("sorted: ", list)
+  LOGO && console.log("sorted: ", list)
   return list
 }
 
@@ -353,9 +353,9 @@ buscarProvinciasOpciones = (list) => {
 
 /**Checkear las entidades y meterlas al canvass */
 function onGetIdList(id, x , y){
-  console.log("ADD:", id, x , y)
+  LOGO && console.log("ADD:", id, x , y)
   let idnew = id.substring(1)
-  console.log(idnew)
+  LOGO && console.log(idnew)
 
   let element = asambleistas[idnew]
 
@@ -364,13 +364,13 @@ function onGetIdList(id, x , y){
       entidades[element.numeroId] = element
       entidades[element.numeroId].xOffset = x +170
       entidades[element.numeroId].yOffset = y +80
-      console.log(entidades, d3.values(entidades).length)
+      LOGO && console.log(entidades, d3.values(entidades).length)
     }
     else{
       entidades[element.numeroId].visitado = true
     }
     element.visitado = true
-    console.log("checked", element.visitado);
+    LOGO && console.log("checked", element.visitado);
     updateNodes()
   }
   else {
@@ -385,7 +385,7 @@ function updateNodes () {
   for (let key in entidades) {
     if(entidades[key].visitado == true) newnodes.push(entidades[key])
   }
-  console.log("newnodes:", newnodes)
+  LOGO && console.log("newnodes:", newnodes)
   groups = _groups()
   nodes = createNodes(newnodes, groups)
   colorMap = $('#colores-select').val() 
@@ -425,7 +425,7 @@ function addAllEntities(id, x, y){
 /**Lista de entidades Individuales */
 function outputAsambleistas (nodos) {
   let list = Object.values(nodos)
-  console.log("LIST:", list)
+  LOGO && console.log("LIST:", list)
   list.sort(value => { return value.visitado ? 1 : -1})
 
   if (list.length > 0){
@@ -545,7 +545,7 @@ function updateDictEntities(matches){
     let code = match[0].replaceAll(/\s/g,'')
     dictElements[code] = match[1]
   })
-  console.log("dict de entidades :", dictElements)
+  LOGO && console.log("dict de entidades :", dictElements)
 }
 
 function overEntidades(){}
@@ -583,11 +583,11 @@ function drop(ev) {
 
   let idnew = data.substring(0,1)
 
-  console.log(ev)
-  console.log(data, x, y)
+  LOGO && console.log(ev)
+  LOGO && console.log(data, x, y)
   //console.log(d3.select(ev.target).attr('id'))
-  console.log(id)
-  console.log(idnew)
+  LOGO && console.log(id)
+  LOGO && console.log(idnew)
   //onGetIdList(data, x, y)
  // var data = ev.dataTransfer.getData("text");
  // ev.target.appendChild(document.getElementById(data));
@@ -598,7 +598,7 @@ function drop(ev) {
   }
   else if (idnew == 'o'){
     //Mover un grupo
-    console.log("Mover muchos ", data)
+    LOGO && console.log("Mover muchos ", data)
     addAllEntities(data, x, y)
   }
 

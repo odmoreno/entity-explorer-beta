@@ -146,3 +146,60 @@ function outputEntidades2 (matches, option) {
   
   } 
 }
+
+
+/**V5 antiguo timeline */
+
+/**
+ * <div class="card mb-4">
+              <div class="col-xl-12 col-lg-12">
+                <div class="d-flex flex-column card-header py-3 sectionHeader">
+                  
+                  <div class="d-flex flex-row">
+                    <div id="lineCont" class="m-4"> 
+                      <div id="line"></div>  
+                    </div>
+                    <a href="#collapseCardExample"  class="card-header py-3 sectionHeader" data-toggle="collapse" role="button" aria-expanded="true" 
+                    aria-controls="collapseCardExample"> </a>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="collapse show" id="collapseCardExample">
+                <div class="card-body">
+                  <div class="d-flex flex-column">
+                    <!--
+                      <div class="d-flex flex-column">
+                      <span>Para hacer Zoom in/out, mantener presionado Shift</span>
+                      <span>Usar Scroll del mouse para desplazarse horizontalmente</span>
+                    </div>
+                    <div class="d-flex flex-row">
+                      <input class="mt-1" type="button" id="fit" value="Restablecer visión" />
+                    </div>
+                    <br>
+                    
+                    
+                    <!-- 
+                      <div id="searchVotesArea" class="p-4">
+                      <div class="mb-4 input-group  col-xl-6 col-lg-6" >
+                        <div class="input-group-append mr-2 align-self-center">
+                            <a class="rounded-circle" style="color: #54575b">
+                                <i class="fas fa-search fa-lg"></i>
+                            </a>    
+                        </div>
+
+                        <input onClick="this.select();" type="text" id="searchVotes" class="align-self-center form-control bg-light small" placeholder="Buscar Votaciones ..." aria-label="Search" aria-describedby="basic-addon2" style="border: #54575b 1px solid;" >
+                        
+                      </div>
+                     
+                      <div  class="p-2 d-flex flex-column" id="votesList"></div> 
+                         
+                    </div>
+                    -->
+
+                  </div>
+                </div>
+              </div>
+            </div>
+ */

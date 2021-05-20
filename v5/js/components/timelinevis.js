@@ -35,7 +35,7 @@
       'title': item.name,
       "type": "box",
       'start': new Date( parseInt(fecha[0]), parseInt(fecha[1]-1), parseInt(fecha[2]), parseInt(hora[0]), parseInt(hora[1]) ),
-      'end' : new Date( parseInt(fecha[0]), parseInt(fecha[1]), parseInt(fecha[2]), 23, 59 ),
+      'end' : new Date( parseInt(fecha[0]), parseInt(fecha[1]-1), parseInt(fecha[2]), 23, 59 ),
     }
 
     elements.push(node)
@@ -142,14 +142,15 @@ function createTimelineEvents(){
     //multiselect: true,
     //sequentialSelection: true,
     stack: false,
+    showCurrentTime: true,
     //verticalScroll: true,
     horizontalScroll: true,
     zoomKey: "shiftKey",
-    height: "250px",
-    maxHeight : '300px',
+    height: "400px",
+    maxHeight : '500px',
     orientation: 'top',
     min: new Date(2017, 4, 1), // lower limit of visible range
-    max: new Date(2017, 4, 29),
+    max: new Date(2021, 5, 20),
     //max: new Date(2021, 6, 24), // upper limit of visible range
     zoomFriction: 4,
     moveable: true,

@@ -3,6 +3,7 @@
  *    Componente del grafico de entidades que contendra toda la info de sus funcioens
  */
 
+let LOGC = false
 console.log("Tam:", width)
 
 let durationRect = 500
@@ -50,11 +51,11 @@ var menu = [
   {
     title: 'Resaltar',
     action: function(elm, d, i) {
-      console.log('Resaltar');
-      console.log(d);
+      LOGC && console.log('Resaltar');
+      LOGC && console.log(d);
 
       if(d.labelFlag == false){
-        console.log("no visitado")
+        LOGC &&  console.log("no visitado")
         d3.select("#node"+d.numeroid).attr("stroke", "orange").attr("stroke-width", 3.0)
         d3.select('#text'+ d.numeroid).attr("visibility", "visible")
         d.labelFlag = true
@@ -71,9 +72,9 @@ var menu = [
   {
     title: 'Eliminar',
     action: function(elm, d, i) {
-      console.log(elm, d, i)
-      console.log('Eliminar!');
-      console.log(d);
+      LOGC && console.log(elm, d, i)
+      LOGC && console.log('Eliminar!');
+      LOGC && console.log(d);
       removeEntityChart(d.numeroid)
     }
   }
@@ -96,8 +97,8 @@ function testChart(){
       entidades[asamb.numeroId] = asamb
     }
   })
-  console.log("Entidades selecc: ", entidades)
-  console.log("total: ",  d3.values(entidades).length)
+  LOGC && console.log("Entidades selecc: ", entidades)
+  LOGC && console.log("total: ",  d3.values(entidades).length)
 
   let newnodos = updateSesion(sesiones[currentSes])
   nodes = createNodes(newnodos, groups)
@@ -111,9 +112,9 @@ function testChart(){
   //sortFunction(nodosActuales)
   ////ListEntitys(nodosActuales)
   
-  console.log("Nodos Actuales :", Object.values(nodosActuales).length ,nodosActuales)
-  console.log("entidades: ", Object.values(entidades).length, entidades)
-  console.log("newnodes: ", Object.values(newnodos).length, newnodos)
+  LOGC && console.log("Nodos Actuales :", Object.values(nodosActuales).length ,nodosActuales)
+  LOGC && console.log("entidades: ", Object.values(entidades).length, entidades)
+  LOGC && console.log("newnodes: ", Object.values(newnodos).length, newnodos)
   //console.log("Nodes:", nodes)
 }
 
@@ -147,7 +148,7 @@ function updateSesion(sesion){
   return newnodes
 }
 
-function updateChart(id, doNotAnimate){
+function updateChart(id, flag){
   resetFlags()
   let data = sesiones[id]
   currentSes = id
@@ -158,15 +159,19 @@ function updateChart(id, doNotAnimate){
   updateInfoChart(data)
 
   //initializeList(nodosActuales)
+  doNotAnimate = flag
   sortFunction(nodosActuales)
-  d3.timeout(chart(doNotAnimate), 500)
+  d3.timeout(chart, 500)
   //updateTable(nodes)
 }
 
-function chart(doNotAnimate) {
+function chart() {
   // rects for each node.
-  if(doNotAnimate)
+  if(doNotAnimate){
+    //console.log("NO animated")
     durationRect = 1
+  }
+    
 
   rect = rect
     .data(nodes, d=> d.id)
@@ -186,7 +191,7 @@ function chart(doNotAnimate) {
     
           .call( enter => enter.transition().delay(300).duration(durationRect+200)//.delay(80)
             .attr("id", d=> {
-              console.log("Enter rect ", d.id)
+              LOGC && console.log("Enter rect ", d.id)
               return d.id })
             .attr("x", d => d.x)//Offset)
             .attr("y", d => d.y)//Offset)
@@ -198,7 +203,7 @@ function chart(doNotAnimate) {
             .attr("fill", d => color(d, colorMap))
             .attr("stroke", "orange")
             .attr("stroke-width", d => d.labelFlag ? 3.0 : 0))
-          
+      
           .call( enter => enter.select('rect').transition().duration(30)
             .attr("x", d => d.x)
             .attr("y", d => d.y))
@@ -215,17 +220,17 @@ function chart(doNotAnimate) {
           .attr("width", rectSize)
           .attr("height", rectSize)
           .attr("fill", d => {
-            console.log("update ", d.id)
+            LOGC && console.log("update ", d.id)
             return color(d, colorMap)
           })
           ,
       exit => exit.transition()
                   .delay(100)
                   .duration(durationRect+200)
-                  .attr("x", d => d.x + 25)
-                  .attr("y", d => d.y + 50)
-                  .attr("width", 35 - 50)
-                  .attr("height", 35 - 100)
+                  //.attr("x", d => d.x + 25)
+                  //.attr("y", d => d.y + 50)
+                  //.attr("width", 35 - 50)
+                  //.attr("height", 35 - 100)
                   .remove()
     )
     
@@ -281,7 +286,7 @@ function createLabels(){
     .attr("class", "labeltext")
     .text((d, i) => d.nombre)
     .attr("x", d => {
-      console.log(d.x, d)
+      LOGC && console.log(d.x, d)
       return d.x +20
     })
     .attr("y", function(d) {
@@ -294,7 +299,7 @@ function createLabels(){
   let labelHeights = []
   let prevRightBound = -labelLeft
 
-  console.log("Rigth bounds:", labelRightBounds)
+  LOGC && console.log("Rigth bounds:", labelRightBounds)
 
   for (let i in labelRightBounds) {
     if (labelRightBounds[i][0] < prevRightBound + labelLeft) {
@@ -307,7 +312,7 @@ function createLabels(){
     prevRightBound = labelRightBounds[i][0] + labelRightBounds[i][1]
   }
   
-  console.log("label height:", labelHeights)
+  LOGC && console.log("label height:", labelHeights)
 
   function getLabelHeight(i) {
     if (i == labelRightBounds.length - 1) {
@@ -328,7 +333,7 @@ function createLabels(){
 
   getLabelHeight(0);
 
-  console.log("label height:", labelHeights)
+  LOGC && console.log("label height:", labelHeights)
 
   lines = lines
     .data(nodes, d=> d.id)
@@ -374,7 +379,7 @@ createNodes = (nodos, groups) => {
   pointsForMatrix(votoSi, groups, nodes, "si")
   pointsForMatrix(votoAus, groups, nodes, "aus")
 
-  console.log("Create for votes:", nodes)
+  LOGC && console.log("Create for votes:", nodes)
   return nodes
 }
 
@@ -432,7 +437,7 @@ pointsForMatrix = (votos, groups, nodes, opc) => {
     rowSize = 11
 
   let size = Math.ceil(sizeVotos/rowSize)
-  console.log("Size:", size)
+  LOGC && console.log("Size:", size)
 
   for(var y = 0; y<size; y++){
     var tempData = [size];
@@ -498,7 +503,7 @@ updateInfoChart = (sesion) => {
 // Drag functions used for interactivity
 
 function dragstarted(d) {
-  console.log("No Activate:", !d3.event.active)
+  LOGC && console.log("No Activate:", !d3.event.active)
   //if (!d3.event.active) //simulation.alphaTarget(0.3).restart();
   d3.select("#"+d.id).classed("dragging", true);
   //d.x = d.x;
@@ -533,8 +538,8 @@ function dragged(d) {
 function dragended(d) {
   //if (!d3.event.active) //simulation.alphaTarget(0);
   d3.select("#"+d.id).classed("dragging", false);
-  console.log("Draggend x :", d3.event.x)
-  console.log("Draggend y :", d3.event.y)
+  LOGC && console.log("Draggend x :", d3.event.x)
+  LOGC && console.log("Draggend y :", d3.event.y)
 
   if(d3.event.x > width - 30){
     d3.select("svg").style("border-right", "0px solid lightskyblue")
@@ -542,7 +547,7 @@ function dragended(d) {
     d.x = d3.event.x
     d.y = d3.event.y
     d3.select("#"+d.id).attr("x", d3.event.x).attr("y", d3.event.y)
-    console.log("fuera del rango permitido")
+    LOGC && console.log("fuera del rango permitido")
     entidades[d.numeroid].visitado = false
     updateChartEntitys()
   }
@@ -552,7 +557,7 @@ function dragended(d) {
     d.x = d3.event.x
     d.y = d3.event.y
     d3.select("#"+d.id).attr("x", d3.event.x).attr("y", d3.event.y)
-    console.log("fuera del rango permitido")
+    LOGC && console.log("fuera del rango permitido")
     entidades[d.numeroid].visitado = false
     updateChartEntitys()
   }

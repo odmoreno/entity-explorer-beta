@@ -2,7 +2,7 @@
  * Busqueda de sesiones
  */
 
-var LOGBS = true
+var LOGBS = false
 
 let listaResultadosV = document.getElementById('busquedaDiv');
 
@@ -26,7 +26,7 @@ function searchSesiones(searchText) {
       listaResultadosV.innerHTML = ''
   }
   if (matches.length > 13)
-    matches = matches.slice(0, 13)
+    matches = matches.slice(0, 15)
 
     LOGBS && console.log("data:", matches)
     outputSesiones(word)
@@ -123,7 +123,7 @@ function outputSesiones (option) {
 
         <div  class=" d-flex flex-row l mb-1" style="align-items: center;">
           <span class="${element.flag ? 'entitySelected': 'entityAway'}"  
-                onmouseover="overEntidades()" onmouseleave="onLeaveEntidades()"> 
+                onmouseover="overSesiones(${element.sesId})" onmouseleave="onLeaveSesiones(${element.sesId})"> 
                  Sesión ${option} </span>
         </div>
       </div>
@@ -166,7 +166,7 @@ function outputVotes(matches){
           <div class="d-flex flex-row ml-3 justify-content-between">
             <div  class=" d-flex flex-row l mb-1" style="align-items: center;">
 
-              <div class="d-flex flex-column">
+              <div class="d-flex flex-column" onmouseover="overVotes(${element.sesId})" onmouseleave="onLeaveVote(${element.sesId})">
                 <div class="d-flex flex-row">
                   ${ sesFlag ? ' ': `<span class='mr-2'  style="color: #034EA2; font-weight: bold;"> Sesión ${element.sesion}</span>`}
                   <span class='mr-2' style="color: #034EA2; font-weight: bold;"> Votación ${element.votacion}</span>
@@ -187,6 +187,23 @@ function outputVotes(matches){
   }
 }
 
+
+function overVotes(id){
+  d3.select("#v"+id).style("border", "2px solid orange")
+}
+
+function onLeaveVote(id){
+  d3.select("#v"+id).style("border", "2px solid white")
+}
+
+function overSesiones(id){
+  d3.select("#x"+id).style("border", "2px solid orange")
+}
+
+function onLeaveSesiones(id){
+  d3.select("#x"+id).style("border", "2px solid white")
+}
+
 /**FUNCIONES de drag con los resultados y drop con el grafico */
 function drag2(event) {
   event.dataTransfer.setData("text", event.target.id);
@@ -198,11 +215,11 @@ function allowDrop2(ev) {
 
 function drop2(ev) {
   ev.preventDefault();
-  console.log("Hola, ingreso de entidad en el timeline")
+  LOGBS && console.log("Hola, ingreso de entidad en el timeline")
   var data = ev.dataTransfer.getData("text")
   //var id = document.getElementById(data)
   //console.log(id)
-  console.log(data)
+  LOGBS && console.log(data)
 
   let idnew = data.substring(1)
 
@@ -214,8 +231,8 @@ function drop2(ev) {
 function handleDragStart(event) {
   var dragSrcEl = event.target;
 
-  console.log("drag:", dragSrcEl)
-  console.log(dragSrcEl.id)
+  LOGBS && console.log("drag:", dragSrcEl)
+  LOGBS && console.log(dragSrcEl.id)
 
   let idnew = dragSrcEl.id.substring(1)
 
@@ -247,13 +264,15 @@ function handleDragEnd(e) {
   let element = e.target; // This is the same element as we used before
   let id = element.id
   let idnew = id.substring(1)
-  console.log("ID END:", element.id)
+  LOGBS && console.log("ID END:", element.id)
   
   let item = sesiones[idnew]
-  console.log("item:", item)
+  LOGBS && console.log("item:", item)
   let fecha = item.fecha.split('-')
   let hora = item.hora.split(':')
-  console.log(fecha)
+  LOGBS && console.log(fecha)
+
+  console.log("fecha:", fecha, "hora:", hora)
 
 
   let node = {
@@ -265,20 +284,14 @@ function handleDragEnd(e) {
     'title': item.name,
     "type": "box",
     'start': new Date( parseInt(fecha[0]), parseInt(fecha[1]-1), parseInt(fecha[2]), parseInt(hora[0]), parseInt(hora[1]) ),
-    'end' : new Date( parseInt(fecha[0]), parseInt(fecha[1]), parseInt(fecha[2]), 23, 59 ),
+    'end' : new Date( parseInt(fecha[0]), parseInt(fecha[1]-1), parseInt(fecha[2]), 23, 59 ),
   }
 
   datas.add(node)
   
   getIdSes(item.sesId)
-
-  var options = {};
-  var newOpt = {
-    min: new Date(2017, 4, 1), // lower limit of visible range
-    max:  new Date( parseInt(fecha[0]), parseInt(fecha[1]-1), parseInt(fecha[2] +1), 23, 59 ),
-  }
-  Object.assign(options, defaultOptions, newOpt);
-  timeline.setOptions(options);
+  
+  setRangeTimeline()
 
   //var dir = -2
   //var range = timeline.getWindow();
@@ -288,13 +301,13 @@ function handleDragEnd(e) {
   //  end: range.end.valueOf() + interval * dir * 0.2,
   //});
 
-  timeline.fit()
+  //timeline.fit()
 }
 
 
 function handleDragStart2(event) {
   var dragSrcEl = event.target;
-  console.log("Drag23")
+  LOGBS && console.log("Drag23")
 
 }
 
@@ -302,23 +315,23 @@ function handleDragEnd2(e) {
   let element = e.target; // This is the same element as we used before
   let id = element.id
   let idnew = id.substring(1)
-  console.log("ID END:", element.id)
+  LOGBS && console.log("ID END:", element.id)
   
   let item = sesiones[idnew]
-  console.log("item:", item.sesion)
+  LOGBS && console.log("item:", item.sesion)
 
 
   let sesionesList = Object.values(sesiones) 
-  console.log(sesionesList)
+  LOGBS && console.log(sesionesList)
   let newList = [... sesionesList]
   let sVotes = newList.filter(v => v.sesion == item.sesion)
-  console.log('SES:', sVotes)
+  LOGBS && console.log('SES:', sVotes)
 
   sVotes.map(item => {
-    console.log("item:", item)
+    LOGBS && console.log("item:", item)
     let fecha = item.fecha.split('-')
     let hora = item.hora.split(':')
-    console.log(fecha)
+    LOGBS && console.log(fecha)
     let node = {
       'id': item.sesId,
       'className': item.anio == '2017' ? 'orange' : (item.anio == '2018' ? 'green' : (item.anio == '2019' ? 'red' : (item.anio == '2020' ? 'magenta' : 'default') ) ),
@@ -328,28 +341,24 @@ function handleDragEnd2(e) {
       'title': item.name,
       "type": "box",
       'start': new Date( parseInt(fecha[0]), parseInt(fecha[1]-1), parseInt(fecha[2]), parseInt(hora[0]), parseInt(hora[1]) ),
-      'end' : new Date( parseInt(fecha[0]), parseInt(fecha[1]), parseInt(fecha[2]), 23, 59 ),
+      'end' : new Date( parseInt(fecha[0]), parseInt(fecha[1]-1), parseInt(fecha[2]), 23, 59 ),
     }
 
     datas.add(node)
     getIdSes(item.sesId)
 
-    var options = {};
-    var newOpt = {
-      min: new Date(2017, 4, 14), // lower limit of visible range
-      max:  new Date( parseInt(fecha[0]), parseInt(fecha[1] -1), parseInt(fecha[2]), 23, 59 ),
-    }
-    Object.assign(options, defaultOptions, newOpt);
-    timeline.setOptions(options);
+    setRangeTimeline()
+    //Object.assign(options, defaultOptions, newOpt);
+    //timeline.setOptions(options);
 
   })
 
-  timeline.fit()
+  //timeline.fit()
 }
 
 function addListeners(){
   var items = document.querySelectorAll(".itemVotes");
-  console.log("items", items)
+  LOGBS && console.log("items", items)
 
   for (var i = items.length - 1; i >= 0; i--) {
     var item = items[i];
@@ -360,11 +369,11 @@ function addListeners(){
   if(sesFlag){
     var itemsSes = document.querySelectorAll(".itemSes");
 
-    console.log("items", itemsSes)
+    LOGBS && console.log("items", itemsSes)
 
     for (var i = itemsSes.length - 1; i >= 0; i--) {
       var item2 = itemsSes[i];
-      console.log("D:", item)
+      LOGBS && console.log("D:", item)
       item2.addEventListener("dragstart", handleDragStart2.bind(this), false);
       item2.addEventListener('dragend', handleDragEnd2.bind(this), false); 
     }
@@ -372,4 +381,44 @@ function addListeners(){
 }
 
 
+function setRangeTimeline(){
+  let range = timeline.getItemRange()
+  console.log("RANGE:", range)
 
+  let minTl = range.min
+  let maxTl = range.max
+  console.log(minTl, maxTl)
+
+  let lastSesionList = sesiones[lastIdS]
+  console.log("LastSes:", lastSesionList)
+  let fecha = lastSesionList.fecha.split('-')
+  let hora = lastSesionList.hora.split(':')
+  let newMax = new Date( parseInt(fecha[0]), parseInt(fecha[1]-1), parseInt(fecha[2]), parseInt(hora[0]) +1,  59 )
+
+  //console.log("NEWMAX:", newMax,  parseInt(fecha[0]), parseInt(fecha[1]-1), parseInt(fecha[2]), parseInt(hora[0]) +1,  59)
+  timeline.setWindow(minTl, newMax, { animation: true });
+
+  //var options = {};
+  //var newOpt = {
+  //  min: minTl,
+  //  max:  new Date( parseInt(fecha[0]), parseInt(fecha[1]-1), parseInt(fecha[2]), parseInt(hora[0]+2, 59), 59 ),
+  //}
+  //Object.assign(options, defaultOptions, newOpt);
+  //timeline.setOptions(options);
+}
+
+function findsesion(id){
+
+  let lastSesionList = sesiones[id]
+  console.log("LastSes:", lastSesionList)
+  let fecha = lastSesionList.fecha.split('-')
+  let hora = lastSesionList.hora.split(':')
+  let newMax = new Date( parseInt(fecha[0]), parseInt(fecha[1]-1), parseInt(fecha[2]), parseInt(hora[0]) +1,  59 )
+  let newMin = new Date( parseInt(fecha[0]), parseInt(fecha[1]-1), parseInt(fecha[2]), parseInt(hora[0]) -4,  59 )
+
+  //console.log("NEWMAX:", newMax,  parseInt(fecha[0]), parseInt(fecha[1]-1), parseInt(fecha[2]), parseInt(hora[0]) +1,  59)
+  timeline.setWindow(newMin, newMax, { animation: true });
+
+  timeline.setSelection(id, { focus: false });
+  //timeline.focus(id);
+}
