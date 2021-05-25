@@ -92,7 +92,7 @@ function testChart(){
   groups = _groups()
   
   d3.values(asambleistas).map(function(asamb) {
-    if(asamb.partido == 'creo' || asamb.partido == 'suma'){
+    if(true){//asamb.partido == 'creo' || asamb.partido == 'suma'
       asamb.labelFlag = false
       entidades[asamb.numeroId] = asamb
     }

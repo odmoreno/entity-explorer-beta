@@ -303,7 +303,7 @@ body{
 
 .vis-item.vis-box {
   height: 200px !important;
-  max-width: 210px;
+  max-width: 250px;
   overflow-y: scroll;
   opacity: 1;
 }

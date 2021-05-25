@@ -146,8 +146,8 @@ function createTimelineEvents(){
     //verticalScroll: true,
     horizontalScroll: true,
     zoomKey: "shiftKey",
-    height: "400px",
-    maxHeight : '500px',
+    height: "285px",
+    maxHeight : '285px',
     orientation: 'top',
     min: new Date(2017, 4, 1), // lower limit of visible range
     max: new Date(2021, 5, 20),

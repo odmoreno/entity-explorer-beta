@@ -248,7 +248,8 @@ $("#slider-votos").ionRangeSlider({
   from: 0, 
   step:1, 
   hide_min_max: true, 
-  
+  grid: true,
+  //grid_snap: true  
 });
 //Fin de eventos
 
@@ -442,8 +443,8 @@ function udpateSliderVotes(){
     max: max-1,
     from: max-1,
     step: 1, 
-    grid: false,
-    hide_min_max: true,
+    //grid: true,
+    //hide_min_max: true,
     prettify: function (n) {
         let sesId = dictIVotes[n]
         var tag = sesiones[sesId]
