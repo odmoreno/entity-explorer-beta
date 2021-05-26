@@ -640,14 +640,17 @@ calculateSpace = (opc, size) => {
     if(size > 30){
       value = value -20
     }
-    if (size > 40 || size > 50 ||size > 60 ){
+    if (size > 40 || size > 50 ){
       value = value -30
     }
-    if (size > 70 || size > 80 || size > 90){
+    if(size > 60 || size > 70 ){
       value = value -40
     }
+    if (size > 80 || size > 90){
+      value = value -50
+    }
     if (size > 100 || size > 110 || size > 120){
-      value = value -85
+      value = value -75
     }
   }
   else if(opc == "no"){

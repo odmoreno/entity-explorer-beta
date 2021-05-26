@@ -12,6 +12,7 @@ let dictEntidades = {
   'Región': {label: false, name: 'region'},
   'Partido': {label: false, name: 'partidos'},
   'Provincia': {label: false, name: 'provincia'},
+  'Todos': {label: false, name: 'todos'},
 }
 
 let entityList = document.getElementById('entity-list');
@@ -203,6 +204,8 @@ function findEntities (searchText) {
       filterProv(searchText, true)    
   else if ( text.includes("comision") )
       filterComisiones(searchText, true)    
+  else if (text.includes("todo"))
+      filterAll()
   else {
       //entityList.innerHTML = ''
       filterPartidos(searchText, false)
@@ -224,6 +227,19 @@ filterAsams = (text, flag) => {
   //console.log("asams filtrados: ", matches)
   //sortFunction(matches)
   outputAsambleistas(matches)
+}
+
+filterAll = () => {
+  //const regex = new RegExp(`\\b.*${text}.*?\\b`, 'gi')
+  let matches = Object.values(nodosActuales)
+  let data = []
+  let info = []
+  info.push("Todos")
+  info.push(matches)
+  data.push(info)
+  
+  outputEntidades(data, 'Todos')
+
 }
 
 filterPartidos = (text, flag) => {
@@ -487,7 +503,7 @@ function outputEntidades (matches, option) {
 
   listaResultados.innerHTML += header
 
-  //console.log('matches:', matches)
+  console.log('matches:', matches)
   //console.log("name: ", matches[0][0].replaceAll(/\s/g,''))
   let element = dictEntidades[option]
   
@@ -538,7 +554,8 @@ function fillColorByType(d, option){
   }
   else if ( option == "provincia") 
     color = colorProvincias(provincias[d])
-
+  else if ( option == "todos")
+    color = '#ffb700'
   //LOGO && console.log('color')
   return color
 }
