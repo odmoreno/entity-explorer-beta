@@ -94,7 +94,7 @@ function testChart(){
   d3.values(asambleistas).map(function(asamb) {
     if(true){//asamb.partido == 'creo' || asamb.partido == 'suma'
       asamb.labelFlag = false
-      entidades[asamb.numeroId] = asamb
+      //entidades[asamb.numeroId] = asamb
     }
   })
   LOGC && console.log("Entidades selecc: ", entidades)
@@ -236,7 +236,7 @@ function chart() {
     
   rect.on("mouseover", d=> mouseOverRect(d)).on("mouseout", d=> mouseOutRect(d))
 
-  rect.on('contextmenu', d3.contextMenu(menu));
+  //rect.on('contextmenu', d3.contextMenu(menu));
 
   //rect.on('contextmenu', d3.contextMenu(menu, {
 	//	onOpen: function() {
@@ -631,9 +631,6 @@ calculateSpace = (opc, size) => {
   else if (rectSize == 25){
     value = -75
   }
-  else {
-    value = -75
-  }
 
   if (opc == "si"){
     
@@ -692,6 +689,10 @@ calculateSpace = (opc, size) => {
 
   else if(opc == "aus"){
    
+    console.log("AUS:", value)
+    if(size>=3){
+      value = value + 50
+    }
     if(size >= 5)
       value = value +30
     if(size > 10)
