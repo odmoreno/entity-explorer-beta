@@ -148,7 +148,7 @@ function outputVotes(matches){
     const header = 
       `<div class="card-listU">
         <a href="#collapseAsambs2" class="d-block card-headerU py-2" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
-          <h6 class="m-0 font-weight-bold text-primary" style="text-transform:capitalize">Votos</h6>
+          <h6 class="m-0 font-weight-bold text-primary" style="text-transform:capitalize">Votaciones</h6>
         </a>
         <div class="collapse show" id="collapseAsambs2">
           <div id="bodyAsambs3" class="card-body">
