@@ -137,6 +137,7 @@ function createTimelineEvents(){
   defaultOptions = {
     editable: {
       add: true,
+      remove: true
     },
     //selectable: true, 
     //multiselect: true,
@@ -177,6 +178,9 @@ function createTimelineEvents(){
       console.log("ONadd:", item)
       callback(item)
     },
+    onRemove: function (item, callback) {
+      console.log("item:", item)
+    },
   };
   
   timeline = new vis.Timeline(container);
@@ -192,12 +196,25 @@ function createTimelineEvents(){
 //
   //});
 
-  //timeline.on("click", function (properties) {
-  //  console.log("Click", properties)
-  //  //var id = properties.item
-  //  //if(id != null)
-  //  //  getIdSes(id)
-  //});
+  timeline.on("click", function (properties) {
+    console.log("Click", properties)
+    var id = properties.item
+    console.log(id)
+    
+    //timeline.setSelection(id, { focus: false });
+
+    currentId = reverseDIVotes[id]
+
+    currentSes = dictIVotes[currentId]
+    updateChart(currentSes, false)
+
+
+    let slider = $("#slider-votos").data("ionRangeSlider");
+    slider.update({
+      from: currentId
+    })
+
+  });
 
 }
 

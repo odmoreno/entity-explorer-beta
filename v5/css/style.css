@@ -24,11 +24,11 @@ body{
 }
 .three {
   grid-column: 1 / 10;
-  grid-row: 2 / 4;
+  grid-row: 1/ 4;
 }
 .four {
   grid-column: 10 / 13;
-  grid-row: 2 / 4;
+  grid-row: 1 / 4;
 }
 .five {
   grid-column: 1 / 10;
@@ -78,7 +78,7 @@ body{
 
 #entity-list {
   max-width: auto;
-  overflow: scroll; 
+  overflow: auto; 
   /*overflow-x: auto;*/
   max-height: 660px;
   opacity: 0.9;
@@ -304,7 +304,7 @@ body{
 .vis-item.vis-box {
   height: 200px !important;
   max-width: 250px;
-  overflow-y: scroll;
+  overflow-y: auto;
   opacity: 1;
 }
 

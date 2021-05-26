@@ -435,6 +435,16 @@ pointsForMatrix = (votos, groups, nodes, opc) => {
     rowSize = 10
   if (sizeVotos > 60)
     rowSize = 11
+  if (sizeVotos > 70)
+    rowSize = 12
+  if (sizeVotos > 80)
+    rowSize = 13
+  if (sizeVotos > 90)
+    rowSize = 14
+  if (sizeVotos > 100)
+    rowSize = 15
+  if (sizeVotos > 110)
+    rowSize = 16
 
   let size = Math.ceil(sizeVotos/rowSize)
   LOGC && console.log("Size:", size)
@@ -460,7 +470,7 @@ pointsForMatrix = (votos, groups, nodes, opc) => {
 
     let tmp = groups[d.voto].x
     if(votos.length > 2)
-      tmp = groups[d.voto].x  + calculateSpace(opc, votos.length)
+      tmp = groups[d.voto].x  + calculateSpace(opc, sizeVotos)
 
     let nodeu = {
       id: "node"+d.numeroId,
@@ -626,14 +636,80 @@ calculateSpace = (opc, size) => {
   }
 
   if (opc == "si"){
-    value = value -20
+    
+    if(size > 10){
+      value = value + 17
+    }
+    if(size > 30){
+      value = value -20
+    }
+    if (size > 40 || size > 50 ||size > 60 ){
+      value = value -30
+    }
+    if (size > 70 || size > 80 || size > 90){
+      value = value -40
+    }
+    if (size > 100 || size > 110 || size > 120){
+      value = value -85
+    }
   }
   else if(opc == "no"){
-    if(size > 20)
-      value = value +10
-    else  
+   
+    if(size> 10){
       value = value +20
+    }
+    if(size > 20)
+      value = value -10
+    
+    if (size > 30 || size > 40 ||size > 50 ){
+      value = value - 55
+    }
+    if (size > 60 || size > 70 ||size > 80 ){
+      value = value - 65
+    }
+    if (size > 90 || size > 100 ||size > 110 ){
+      console.log("mayor a 100", value)
+      value = value - 40
+    }
+
   }
+  else if(opc == "abs"){
+   
+    if(size > 20)
+      value = value -15
+    
+    if (size > 30 || size > 40 ||size > 50 ){
+      value = value - 25
+    }
+    if (size > 60 || size > 70 ||size > 80 ){
+      value = value - 65
+    }
+    if (size > 90 || size > 100 ||size > 110 ){
+      value = value - 95
+    }
+
+  }
+
+  else if(opc == "aus"){
+   
+    if(size >= 5)
+      value = value +30
+    if(size > 10)
+      value = value -10
+    if(size > 20)
+      value = value -15 
+    if (size > 30 || size > 40 ||size > 50 ){
+      value = value - 25
+    }
+    if (size > 60 || size > 70 ||size > 80 ){
+      value = value - 65
+    }
+    if (size > 90 || size > 100 ||size > 110 ){
+      value = value - 85
+    }
+
+  }
+  
 
   return value
 

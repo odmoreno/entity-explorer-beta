@@ -334,7 +334,7 @@ function handleDragEnd2(e) {
     LOGBS && console.log(fecha)
     let node = {
       'id': item.sesId,
-      'className': item.anio == '2017' ? 'orange' : (item.anio == '2018' ? 'green' : (item.anio == '2019' ? 'red' : (item.anio == '2020' ? 'magenta' : 'default') ) ),
+      'className': 'orange', //item.anio == '2017' ? 'orange' : (item.anio == '2018' ? 'green' : (item.anio == '2019' ? 'red' : (item.anio == '2020' ? 'magenta' : 'default') ) ),
       'group': item.anio,
       'content': getContent2(item),
       'asunto': item.asunto,

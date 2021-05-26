@@ -297,8 +297,8 @@ createGroups = () => {
 
 _groups = () => {
   const groups = {
-    "si": { x: 1.5*width/5, y: height/6, cnt: 0, fullname: "Si" },
-    "no": { x: 3.5*width/5, y: height/6, cnt: 0, fullname: "No" },
+    "si": { x: 1.5*width/6, y: height/6, cnt: 0, fullname: "Si" },
+    "no": { x: 3*width/4, y: height/6, cnt: 0, fullname: "No" },
     "ausente": { x: width/5, y: 2*height/2.5, cnt: 0, fullname: "Ausente" },
     "abstencion": { x: 3.5*width/4, y: 2*height/2.5, cnt: 0, fullname: "Abstención" },
     "blanco": { x: width/2 +29, y: 2*height/2.5, cnt: 0, fullname: "Blanco" },
@@ -441,7 +441,7 @@ function udpateSliderVotes(){
   slider.update({
     min: 0,
     max: max-1,
-    from: max-1,
+    from: 0,
     step: 1, 
     //grid: true,
     //hide_min_max: true,
