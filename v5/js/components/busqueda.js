@@ -25,6 +25,8 @@ function ListEntitys (nodos) {
   list = list.filter(element => element.visitado) 
   //list.sort(value => { return value.visitado ? -1 : 1})
   //entityList.innerHTML = ''
+  d3.select('#div-entity').style('height','792px')
+  
   const html = list.map(element => 
     `<div  id="e${element.numeroId}"  class="card-list py-2 asamb-list nodrag noselect">
         <div class="d-flex flex-row ml-4 justify-content-between">
@@ -56,6 +58,8 @@ function ListEntitys (nodos) {
 
   entityList.innerHTML += html
   divTootltip()
+
+
 }
 
 function divTootltip(){

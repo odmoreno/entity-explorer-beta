@@ -118,12 +118,12 @@ function outputSesiones (option) {
   //console.log(option, element)
   const html = 
       `<div id="x${element.sesId}" class="card-listU itemSes py-1 ${!element.flag ? 'draggme' : 'nodrag'}" 
-      draggable="${!element.flag ? true : false}"  >
+      draggable="${!element.flag ? true : false}" style="border: 2px solid #f8f9fc;">
       <div class="d-flex flex-row ml-3 justify-content-between">
 
-        <div  class=" d-flex flex-row l mb-1" style="align-items: center;">
-          <span class="${element.flag ? 'entitySelected': 'entityAway'}"  
-                onmouseover="overSesiones(${element.sesId})" onmouseleave="onLeaveSesiones(${element.sesId})"> 
+        <div  class=" d-flex flex-row l mb-1" style="align-items: center;" 
+          onmouseover="overSesiones(${element.sesId})" onmouseleave="onLeaveSesiones(${element.sesId})">
+          <span class="${element.flag ? 'entitySelected': 'entityAway'}"  > 
                  Sesión ${option} </span>
         </div>
       </div>
@@ -156,12 +156,12 @@ function outputVotes(matches){
         </div>
       </div>`
 
-    console.log("Matches votes:", matches)
+    LOGBS && console.log("Matches votes:", matches)
     listaResultadosV.innerHTML += header
     const html = matches.map(element =>
       `<div  id="v${element.sesId}"  class="card-listU itemVotes py-1 ${!element.visitado ? 'draggme' : 'nodrag2 noselect'}"
           draggable="${!element.visitado ? true : false}"  
-          style="border-bottom: 1px solid powderblue;">
+          style="border: 2px solid #f8f9fc;">
 
           <div class="d-flex flex-row ml-3 justify-content-between">
             <div  class=" d-flex flex-row l mb-1" style="align-items: center;">
@@ -193,7 +193,7 @@ function overVotes(id){
 }
 
 function onLeaveVote(id){
-  d3.select("#v"+id).style("border", "2px solid white")
+  d3.select("#v"+id).style("border", "2px solid #f8f9fc")
 }
 
 function overSesiones(id){
@@ -201,7 +201,7 @@ function overSesiones(id){
 }
 
 function onLeaveSesiones(id){
-  d3.select("#x"+id).style("border", "2px solid white")
+  d3.select("#x"+id).style("border", "2px solid #f8f9fc")
 }
 
 /**FUNCIONES de drag con los resultados y drop con el grafico */
@@ -272,12 +272,12 @@ function handleDragEnd(e) {
   let hora = item.hora.split(':')
   LOGBS && console.log(fecha)
 
-  console.log("fecha:", fecha, "hora:", hora)
+  LOGBS && console.log("fecha:", fecha, "hora:", hora)
 
 
   let node = {
     'id': item.sesId,
-    'className': item.anio == '2017' ? 'orange' : (item.anio == '2018' ? 'green' : (item.anio == '2019' ? 'red' : (item.anio == '2020' ? 'magenta' : 'default') ) ),
+    'className': 'orange',//item.anio == '2017' ? 'orange' : (item.anio == '2018' ? 'green' : (item.anio == '2019' ? 'red' : (item.anio == '2020' ? 'magenta' : 'default') ) ),
     'group': item.anio,
     'content': getContent2(item),
     'asunto': item.asunto,
@@ -383,14 +383,14 @@ function addListeners(){
 
 function setRangeTimeline(){
   let range = timeline.getItemRange()
-  console.log("RANGE:", range)
+  LOGBS && console.log("RANGE:", range)
 
   let minTl = range.min
   let maxTl = range.max
-  console.log(minTl, maxTl)
+  LOGBS && console.log(minTl, maxTl)
 
   let lastSesionList = sesiones[lastIdS]
-  console.log("LastSes:", lastSesionList)
+  LOGBS && console.log("LastSes:", lastSesionList)
   let fecha = lastSesionList.fecha.split('-')
   let hora = lastSesionList.hora.split(':')
   let newMax = new Date( parseInt(fecha[0]), parseInt(fecha[1]-1), parseInt(fecha[2]), parseInt(hora[0]) +1,  59 )
@@ -410,7 +410,7 @@ function setRangeTimeline(){
 function findsesion(id){
 
   let lastSesionList = sesiones[id]
-  console.log("LastSes:", lastSesionList)
+  LOGBS && console.log("LastSes:", lastSesionList)
   let fecha = lastSesionList.fecha.split('-')
   let hora = lastSesionList.hora.split(':')
   let newMax = new Date( parseInt(fecha[0]), parseInt(fecha[1]-1), parseInt(fecha[2]), parseInt(hora[0]) +1,  59 )

@@ -80,7 +80,7 @@ body{
   max-width: auto;
   overflow: auto; 
   /*overflow-x: auto;*/
-  max-height: 660px;
+  max-height: 720px;
   opacity: 0.9;
   transition: visibility 0.2s, opacity 0.2s;
   scrollbar-color: dark;

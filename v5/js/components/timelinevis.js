@@ -1,7 +1,7 @@
 /** 
  * Timeline de vis.js
  */
-
+ var LOGV = false
  var timeline
  var defaultOptions;
 
@@ -48,7 +48,7 @@
    *  '<div class="form-check"><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"><label class="form-check-label" for="flexCheckDefault">'
        + item.name + '</label></div>',
    */
-  console.log("items timeline:", elements)
+  LOGV && console.log("items timeline:", elements)
   //console.log('dataset:', Object.values(elements))
   items = new vis.DataSet(elements);
   return items
@@ -81,8 +81,8 @@ function getContent(item){
   //check.setAttribute("onclick", oncheckItem(item.sesId));
   
   check.addEventListener('click', (event, item) => {
-    console.log('event:', event)
-    console.log(event.target, event.target.id)
+    LOGV && console.log('event:', event)
+    LOGV && console.log(event.target, event.target.id)
     
     let id = event.target.id
     let sId = event.target.id.substring(1)
@@ -93,15 +93,15 @@ function getContent(item){
     let parent = inputTag.select(function() {
       return this.closest(".vis-readonly");  // Get the closest parent matching the selector string.
     });
-    console.log(parent.attr('class'))
+    LOGV && console.log(parent.attr('class'))
 
     if (d3.select("#"+id).property("checked")) {
-      console.log("checked")
+      LOGV && console.log("checked")
       getIdSes(sId)
       parent.style('opacity', 1)
     }
     else{
-      console.log("Deschecked")
+      LOGV && console.log("Deschecked")
       removeCircle(sId)
       removeSes(sId)
       parent.style('opacity', 0.5)
@@ -135,15 +135,15 @@ function createTimelineEvents(){
   var container = document.getElementById("timelineVis");
   
   defaultOptions = {
-    editable: {
-      add: true,
-      remove: true
-    },
+    //editable: {
+    //  add: true,
+    //  remove: true
+    //},
     //selectable: true, 
     //multiselect: true,
     //sequentialSelection: true,
     stack: false,
-    showCurrentTime: true,
+    showCurrentTime: false,
     //verticalScroll: true,
     horizontalScroll: true,
     zoomKey: "shiftKey",
@@ -162,7 +162,7 @@ function createTimelineEvents(){
       followMouse: true,
     },
     onDropObjectOnItem: function (objectData, item, callback) {
-      console.log("ondrop:", objectData, item)
+      LOGV && console.log("ondrop:", objectData, item)
       if (!item) {
         return;
       }
@@ -174,13 +174,13 @@ function createTimelineEvents(){
           '"'
       );
     },
-    onAdd: function (item, callback) {
-      console.log("ONadd:", item)
-      callback(item)
-    },
-    onRemove: function (item, callback) {
-      console.log("item:", item)
-    },
+    //onAdd: function (item, callback) {
+    //  LOGV && console.log("ONadd:", item)
+    //  callback(item)
+    //},
+    //onRemove: function (item, callback) {
+    //  LOGV && console.log("item:", item)
+    //},
   };
   
   timeline = new vis.Timeline(container);
@@ -197,9 +197,9 @@ function createTimelineEvents(){
   //});
 
   timeline.on("click", function (properties) {
-    console.log("Click", properties)
+    LOGV && console.log("Click", properties)
     var id = properties.item
-    console.log(id)
+    LOGV && console.log(id)
     
     //timeline.setSelection(id, { focus: false });
 
@@ -207,7 +207,6 @@ function createTimelineEvents(){
 
     currentSes = dictIVotes[currentId]
     updateChart(currentSes, false)
-
 
     let slider = $("#slider-votos").data("ionRangeSlider");
     slider.update({

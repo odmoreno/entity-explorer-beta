@@ -83,6 +83,8 @@ let listIndicesVotes = []
 let dictIVotes = {}
 let currentValueIndex=0;
 let reverseDIVotes = {}
+let totalDict;
+
 
 let doNotAnimate = false
 
@@ -248,7 +250,7 @@ $("#slider-votos").ionRangeSlider({
   from: 0, 
   step:1, 
   hide_min_max: true, 
-  grid: true,
+  //grid: true,
   //grid_snap: true  
 });
 //Fin de eventos
@@ -320,6 +322,7 @@ function addSesion(id){
     idSesiones[id] = sesiones[id]
     //addCircle(id)
     listIndicesVotes.push(id)
+    totalDict = listIndicesVotes.length -1 
     updateSlider()
   }
   
@@ -335,23 +338,20 @@ function addSesion(id){
   //console.log("ReverseDICT:", reverseDIVotes, "currentID:", currentId)
   
   let valuesDICT = Object.keys(idSesiones)
-  console.log("KEYS:", valuesDICT)
+  LOG && console.log("KEYS:", valuesDICT)
   lastIdS = valuesDICT[valuesDICT.length-1]
   firstIds = valuesDICT[0]
-  console.log("LastVALUE:", lastIdS, "FIRST:", firstIds)
-
+  LOG && console.log("LastVALUE:", lastIdS, "FIRST:", firstIds)
   //addSesionToList(id)
-
   updateChart(id, false)
-  
 }
 
 function removeSes(id) {
   let tmpid = 'sesion' + id
-  console.log("Function onclick", tmpid)
+  LOG && console.log("Function onclick", tmpid)
   idSesiones[id].estado = 0
 
-  console.log(idSesiones)
+  LOG && console.log(idSesiones)
   delete idSesiones[id]
 }
 
@@ -435,22 +435,20 @@ colorComisiones = (d) => {
 function udpateSliderVotes(){
   let slider = $("#slider-votos").data("ionRangeSlider");
 
-  console.log("size:", listIndicesVotes.length, "from:", currentValueIndex)
+  LOG && console.log("size:", listIndicesVotes.length-1, "from:", currentValueIndex)
   let max = listIndicesVotes.length
+  
+  LOG && console.log("INDICES:", listIndicesVotes)
+  LOG && console.log("SIZE:", totalDict)
 
   slider.update({
     min: 0,
     max: max-1,
     from: 0,
     step: 1, 
-    //grid: true,
+    grid: true,
+    //grid_num: totalDict, 
     //hide_min_max: true,
-    prettify: function (n) {
-        let sesId = dictIVotes[n]
-        var tag = sesiones[sesId]
-        //console.log(tag)
-        return "Sesión " + tag.sesion + " Votación " + tag.votacion
-    },  
     onChange: function (data) {
       let numero = data.from
       currentValueIndex = numero
@@ -466,27 +464,35 @@ function udpateSliderVotes(){
       let sesId = dictIVotes[currentValueIndex]
       //console.log("SESION:", sesId)
       findsesion(sesId)
-    }
+    },
+    //prettify_enabled: true,
+    //prettify_separator: ',',
+    prettify: function (n) {
+      let sesId = dictIVotes[n]
+      var tag = sesiones[sesId]
+      //console.log('tag:',tag)
+      return "Sesión " + tag.sesion + " Votación " + tag.votacion
+    },  
   });
 
-  console.log("SLider:", slider)
+  LOG && console.log("SLider:", slider)
 }
 
 function updateValuesForSlider(){
 
-  console.log("current List:", listIndicesVotes)
+  LOG && console.log("current List:", listIndicesVotes)
   listIndicesVotes.sort( (a,b) => (a > b) ? 1 : ((b > a) ? -1 : 0))
-  console.log("sorted List:", listIndicesVotes)
+  LOG && console.log("sorted List:", listIndicesVotes)
 
   dictIVotes = {}
   reverseDIVotes ={}
   for (var i = 0; i < listIndicesVotes.length; i++) {
     dictIVotes[i] = listIndicesVotes[i]
     reverseDIVotes[listIndicesVotes[i]] = i
-    console.log(i, dictIVotes[i])
+    LOG && console.log(i, dictIVotes[i])
   }
 
-  console.log("Dict resultante:", dictIVotes, reverseDIVotes)
+  LOG && console.log("Dict resultante:", dictIVotes, reverseDIVotes)
 }
 
 

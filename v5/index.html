@@ -14,6 +14,8 @@
 
   <!-- Ion range slider -->
   <link rel="stylesheet" href="../shared/ionRangeSlider/ion.rangeSlider.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.2/rangeslider.css">
+
   <!--Multiselect-->
   <link rel="stylesheet" href="../shared/bootstrap-multiselect/bootstrap-multiselect.css">
   <!--D3 tips-->
@@ -105,12 +107,13 @@
                     </div>
                     <div class="row" id="chart" ></div>
                     <div class="row">
-                      <div class="col-xl-2 col-lg-2">
+                      <div class="col-xl-2 col-lg-2 btn-group btn-group-sm" role="group">
                         <button  id="prev-button" class="btn btn-sm btn-primary m-1" style="border-radius: 12px;"><i class="fas fa-arrow-left"></i></button>
                         <button  id="play-button" class="btn btn-sm btn-primary m-1" style="border-radius: 8px;">Play</button>
                         <button  id="next-button" class="btn btn-sm btn-primary m-1" style="border-radius: 12px;"><i class="fas fa-arrow-right"></i></button>
                       </div>
-                      <div class="col-lg-10 col-xl-10" style="top: -15px;"><input id="slider-votos"/></div>    
+                      
+                      <div class="col-lg-10 col-xl-10" style="top: -15px; left: -20px;"><input id="slider-votos"/></div>    
                     </div>
                   </div>
                       
@@ -156,7 +159,7 @@
                 </div>
               </div>
               <!-- Card Body -->
-              <div class="card-body">
+              <div class="card-body" id="div-entity" style="height: 754px;">
                 <div  class="p-2 d-flex flex-column" id="entity-list"></div>
               </div>
             </div>
@@ -173,18 +176,21 @@
           </div>
           <div class="six">
             <h6 class="m-2 font-weight-bold text-primary">Votaciones</h6>
-            <div class="col-xl-12 col-lg-12">
-              <div class="mb-2 input-group">
-                <div class="input-group-append mr-2 align-self-center">
-                    <a class="rounded-circle" style="color: #54575b">
-                        <i class="fas fa-search fa-lg"></i>
-                    </a>    
+            <div class="d-flex flex-row">
+              <div class="col-xl-12 col-lg-12">
+                <div class="mb-2 input-group">
+                  <div class="input-group-append mr-2 align-self-center">
+                      <a class="rounded-circle" style="color: #54575b">
+                          <i class="fas fa-search fa-lg"></i>
+                      </a>    
+                  </div>
+                  <input onClick="this.select();" type="text" id="searchVotes" class="align-self-center form-control bg-light small" placeholder="Buscar votaciones ..." aria-label="Search" aria-describedby="basic-addon2" 
+                    style="border: #54575b 1px solid; max-width: 400px;" >
+                  <div id="busquedaDiv" class="autocomplete-items"></div>
                 </div>
-                <input onClick="this.select();" type="text" id="searchVotes" class="align-self-center form-control bg-light small" placeholder="Buscar votaciones ..." aria-label="Search" aria-describedby="basic-addon2" 
-                  style="border: #54575b 1px solid; max-width: 400px;" >
-                <div id="busquedaDiv" class="autocomplete-items"></div>
               </div>
             </div>
+            
           </div>
 
         </div>
